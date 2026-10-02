@@ -1,0 +1,68 @@
+schema_version: 2
+name: aim1-vaginal-bv
+title: Aim 1 — Hormone-Regulated Vaginal Microbiome (BV)
+created: '2026-10-02'
+status: planning
+question: How do systemic hormonal states shape the vaginal microbial community and its local mucosal
+  environment, and can a multi-scale model of the hormone-regulated vaginal microbiome predict the efficacy
+  and adverse-effect risk of standard antibiotics and emerging biologics for bacterial vaginosis (BV)
+  across patient-specific hormonal states?
+hypothesis: Estrogen-regulated epithelial physiology and vaginal microbial ecology jointly determine BV
+  susceptibility and recurrence. Coupling a mechanistic community model (ecological dynamics of Gardnerella/Lactobacillus)
+  with context-specific genome-scale metabolic models, under a hormone state supplied by a PKPD compartment,
+  will reproduce patient-to-patient variability in metronidazole and L. crispatus (probiotic) outcomes
+  as a function of hormonal state.
+description: 'BV affects more than 20 million women in the US and arises from dysbiosis of the vaginal
+  microbiome, where the interaction between microbial dynamics and the host environment makes the condition
+  hard to resolve. Two women receiving the same BV treatment can show very different recurrence because
+  of interactions among vaginal microbial ecology, estrogen-regulated epithelial physiology, immune responses,
+  and antibiotic exposure.
+
+
+  This investigation builds Aim 1 of MOSAIC: a multi-scale, hormone-regulated model of the vaginal microbiome.
+  Mechanistic community models (Arnold lab) capture macro-level population dynamics; genome-scale metabolic
+  models (Reconstructor-built, transcriptome-informed) resolve intracellular metabolism of key species
+  in a simulated vaginal niche; and a PKPD compartment supplies the estrogen state. The in vitro reproductive-tract
+  Transwell platform (Derre lab) is the testbed for parameterization and validation. Demonstration therapeutics:
+  metronidazole and L. crispatus.'
+executive:
+  what_is_this: Aim 1 of MOSAIC — a planned multi-scale model of the hormone-regulated vaginal microbiome
+    for predicting local BV therapeutic efficacy.
+  verdict: Planned — scoping member studies; no models wired yet.
+  verdict_status: planning
+  decisions_needed:
+  - question: Which vaginal community model is the starting point?
+    context: Arnold-lab ODE/Lotka-Volterra community models vs. a fresh reconstruction; informs the first
+      wrapped Process.
+  - question: Which species and datasets anchor the GEMs?
+    context: Gardnerella and Lactobacillus spp. are the focus; candidate data include UMB-HMP (PRJNA208535),
+      CONRAD BV, VIBRANT, and VS-01.
+scientific_argument:
+  main_claim: A hormone-regulated, multi-scale model of the vaginal microbiome can predict BV therapeutic
+    efficacy and adverse-effect risk across patient-specific estrogen states.
+  evidence_for:
+  - Arnold lab has published ODE community models predicting pre-treatment composition and metronidazole
+    efficacy in BV.
+  - Estrogen is an established regulator of vaginal epithelial physiology and Lactobacillus dominance.
+  - Rich longitudinal metagenomic datasets (UMB-HMP, VS-01, CONRAD, VIBRANT) support personalized community
+    parameterization.
+  evidence_against:
+  - GEMs struggle to capture time-varying population shifts natively; coupling to community ODEs is unproven
+    at this scale.
+  - Causal vs. correlative role of hormone state in recurrence is not yet established.
+  key_figures: []
+  caveats:
+  - Initial scope is estrogen-mediated physiology only; other endocrine axes deferred.
+  - In vitro Transwell validation data may be the limiting input.
+biological_story: 'A healthy vaginal microbiome is typically Lactobacillus-dominant, maintaining a low-pH,
+  estrogen-supported mucosal environment. In BV, that community shifts toward anaerobes such as Gardnerella,
+  and the local environment changes in ways that are hard to reverse. Estrogen sits upstream of this ecology:
+  it shapes epithelial glycogen availability and thereby the nutrients that favor Lactobacillus. MOSAIC
+  Aim 1 makes this chain executable — a PKPD compartment sets the hormone state, genome-scale metabolic
+  models translate that state into species-level metabolic capacity, and a mechanistic community model
+  propagates it to population dynamics and treatment resistance. The pay-off is a model that explains
+  why identical treatments yield different recurrence across patients, and that can screen antibiotics
+  and probiotics against an individual''s hormonal context.'
+studies: []
+expert_docs: []
+acceptance_criteria: []

@@ -1,0 +1,66 @@
+schema_version: 2
+name: aim3-integration
+title: Aim 3 — Compartment-Coupled Integration
+created: '2026-10-02'
+status: planning
+question: When the Aim 1 (vaginal/BV) and Aim 2 (gut–liver/MASLD) models are coupled through explicit
+  hormone synthesis, microbial deconjugation, enterohepatic recycling, and systemic transport of sex hormones,
+  do systemic variations in microbiome composition and endocrine status propagate across organ systems
+  to alter downstream metabolic network behavior and patient-specific therapeutic response?
+hypothesis: Explicit mechanistic interfaces between disparate modeling paradigms — the process-bigraph
+  seam — let the independently developed Aim 1 and Aim 2 models function as a single integrated representation
+  of hormone-regulated human physiology, with hormone homeostasis as the coupling mechanism that carries
+  compartment-level perturbations system-wide.
+description: 'Aim 3 is the integration layer and the core software deliverable of MOSAIC. It connects
+  the vaginal and gut–liver models from Aims 1 and 2 to explicitly simulate the synthesis, microbial deconjugation,
+  enterohepatic recycling, and systemic transport of sex hormones across biological compartments. The
+  central design principle is that each component model keeps its own assumptions, units, and biological
+  scope; MOSAIC supplies executable interfaces (built on Vivarium / process-bigraph) that let one model''s
+  outputs serve as another''s inputs or constraints — metabolite exchange, hormone production and recycling,
+  growth rates, community composition, and agent behavior.
+
+
+  This investigation hosts the seam itself: the shared hormone store, the typed interfaces between GEM
+  / community / PKPD / agent-based Processes, and the system-level studies that test whether perturbations
+  propagate correctly across compartments.'
+executive:
+  what_is_this: Aim 3 of MOSAIC — the planned integration seam that couples the Aim 1 and Aim 2 models
+    through hormone homeostasis to simulate system-level feedback and hormone-mediated transport.
+  verdict: Planned — depends on Aim 1 and Aim 2 components; seam not yet built.
+  verdict_status: planning
+  decisions_needed:
+  - question: What is the shared hormone-state interface contract?
+    context: Defines the typed store (species, units, local vs. global pools) that every model reads/writes
+      — the backbone of the seam.
+  - question: How is enterohepatic recycling represented across the gut–liver seam?
+    context: Microbial deconjugation + reabsorption is the mechanism linking gut community output to systemic
+      estrogen.
+scientific_argument:
+  main_claim: Explicit, executable interfaces between independently developed models — coupled through
+    hormone homeostasis — yield an integrated representation of hormone-regulated physiology in which
+    perturbations propagate across compartments.
+  evidence_for:
+  - Vivarium / process-bigraph already composes heterogeneous simulators as typed, reusable modules across
+    scales.
+  - Hormone homeostasis (estrogen metabolism + enterohepatic recycling) is a plausible, well-motivated
+    coupling variable linking gut, liver, and vaginal compartments.
+  evidence_against:
+  - Differences in spatial/temporal scale at the interfaces between paradigms can make input/output relationships
+    hard to identify.
+  - Integrated prediction failures may be hard to localize to a single component.
+  key_figures: []
+  caveats:
+  - If interface dynamics prove intractable, a fallback is to abstract some connections with learned (e.g.
+    graph neural network) surrogates while keeping components mechanistic.
+  - Integration is gated on Aim 1 and Aim 2 reaching usable component models.
+biological_story: 'Hormone homeostasis is the thread that ties MOSAIC together. The gut microbiome contributes
+  to systemic estrogen availability through microbial deconjugation and enterohepatic recycling; estrogen
+  in turn modulates hepatic metabolism, immune responses, and vaginal epithelial physiology. A perturbation
+  in one compartment — a shift in gut community composition, a change in reproductive stage, a drug —
+  can therefore ripple outward to the others. Aim 3 makes that ripple executable: a shared hormone state
+  couples the vaginal, gut, and liver models so that outputs from one become constraints on the next.
+  The deliverable is the first human-relevant in silico platform that treats hormone homeostasis as a
+  dynamic, system-level regulator of host–microbiome metabolic interactions.'
+studies: []
+expert_docs: []
+acceptance_criteria: []
