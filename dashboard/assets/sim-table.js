@@ -45,16 +45,23 @@
       '" title="emitter / persistence format">' + esc(t) + "</span>";
   }
 
+  // Where the run RAN: its remote deployment while its data is remote, and the backend it ran on once landed
+  // (row.ran_on — a landed run's data is local, so it has no remote_origin, but it did not run here).
   function originLabel(row) {
     var o = row && row.remote_origin;
-    return o ? String(o.deployment || "remote") : "local";
+    if (o) return String(o.deployment || "remote");
+    return (row && row.ran_on) ? String(row.ran_on) : "local";
   }
 
   function originPill(row) {
     var o = row && row.remote_origin;
+    if (!o && row && row.ran_on) {
+      return '<span class="origin-pill origin-remote" title="' +
+        esc("Ran on " + row.ran_on + "; results landed into this workspace") + '">' + esc(row.ran_on) + "</span>";
+    }
     if (!o) return '<span class="origin-pill origin-local" title="local run">local</span>';
     var dep = originLabel(row);
-    var tip = "Remote run on " + dep + " (AWS GovCloud)" +
+    var tip = "Remote run on " + dep +
       (o.simulation_id != null ? " — sim " + o.simulation_id : "") +
       (o.experiment_id ? "\nexperiment: " + o.experiment_id : "") +
       (o.s3_uri ? "\nS3: " + o.s3_uri : "");
@@ -237,13 +244,13 @@
       if (res.status === 200 && b.url) window.open(b.url, "_blank", "noopener");
       else {
         var msg = "Launch failed: " + (b.error || res.status);
-        if (typeof _showToast === "function") _showToast(msg); else alert(msg);
+        if (typeof _showToast === "function") _showToast(msg, { danger: true }); else alert(msg);
       }
     }).catch(function (err) {
       btn.disabled = false;
       btn.textContent = origLabel;
       var msg = "Launch failed: " + err;
-      if (typeof _showToast === "function") _showToast(msg); else alert(msg);
+      if (typeof _showToast === "function") _showToast(msg, { danger: true }); else alert(msg);
     });
   }
   document.addEventListener("click", _onToolLaunchClick, true);
@@ -411,7 +418,7 @@
       var body = res.body || {};
       if (!res.ok) {
         var errMsg = "Rerun failed: " + (body.error || res.status);
-        if (typeof _showToast === "function") _showToast(errMsg);
+        if (typeof _showToast === "function") _showToast(errMsg, { danger: true });
         else alert(errMsg);
         return;
       }
@@ -424,7 +431,7 @@
     }).catch(function (err) {
       if (btnEl) { btnEl.disabled = false; btnEl.textContent = origLabel || "↻ Rerun"; }
       var netMsg = "Rerun failed: network error — " + err;
-      if (typeof _showToast === "function") _showToast(netMsg);
+      if (typeof _showToast === "function") _showToast(netMsg, { danger: true });
       else alert(netMsg);
     });
   }
@@ -485,7 +492,7 @@
       var b = res.body || {};
       if (!res.ok) {
         var em = "Land failed: " + (b.error || res.status);
-        if (typeof _showToast === "function") _showToast(em); else alert(em);
+        if (typeof _showToast === "function") _showToast(em, { danger: true }); else alert(em);
         return;
       }
       var n = b.ptools || 0;
@@ -497,7 +504,7 @@
     }).catch(function (err) {
       _reset();
       var nm = "Land failed: network error — " + err;
-      if (typeof _showToast === "function") _showToast(nm); else alert(nm);
+      if (typeof _showToast === "function") _showToast(nm, { danger: true }); else alert(nm);
     });
   }
   window._landRemote = _landRemote;
