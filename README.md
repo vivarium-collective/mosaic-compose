@@ -14,28 +14,68 @@
      (and `--check` in CI) to keep it fresh. -->
 <!-- END:dashboard -->
 
-The composition workspace for **MOSAIC** (**M**odeling **O**f **S**ex-specific
-metabolism **A**cross **I**nteracting **C**ommunities) — an open, multi-scale
-framework for hormone-regulated host–microbiome metabolism, built to predict
-sex-specific therapeutic efficacy and toxicity.
+> **Status: planned.** This repository is the newly scaffolded composition
+> workspace for MOSAIC. The biology and models described below are the *plan* —
+> nothing is wired up yet. This README lays out what will be built here so the
+> structure is clear before the first model lands.
 
-MOSAIC couples four independently developed modeling paradigms through **hormone
-homeostasis** (estrogen metabolism and enterohepatic recycling) as the shared
-coupling mechanism:
+The planned composition workspace for **MOSAIC** (**M**odeling **O**f
+**S**ex-specific metabolism **A**cross **I**nteracting **C**ommunities) — an open,
+multi-scale framework for hormone-regulated host–microbiome metabolism, aimed at
+predicting sex-specific therapeutic efficacy and toxicity.
 
-- **Genome-scale metabolic models (GEMs)** — context-specific host-tissue and
-  microbial metabolism (fluxes, growth rates).
-- **Mechanistic microbiome community models** — population dynamics, community
-  composition, treatment resistance.
-- **PKPD / whole-body compartment models** — systemic and local hormone and
-  drug concentrations across organs.
-- **Agent-based models (ABM)** — spatiotemporal bacterial–epithelial dynamics.
+## The biology
 
-Each component keeps its own assumptions, units, and biological scope; this
-workspace is the Process-Bigraph **seam** that makes those interfaces executable
-so outputs from one model become inputs/constraints for the others. Demonstration
-systems are **bacterial vaginosis (BV)** and **metabolic dysfunction-associated
-steatotic liver disease (MASLD)**, spanning vaginal, gut, and liver compartments.
+Sex-specific differences in drug efficacy and toxicity are pervasive, but the
+mechanistic role of **dynamic hormone homeostasis** in shaping them is poorly
+understood. MOSAIC treats hormone homeostasis — centered on **estrogen metabolism
+and enterohepatic recycling** — as a systemic network linking **gut, liver, and
+vaginal** physiology, and asks how perturbations in one compartment propagate
+across organ systems to change therapeutic response.
+
+Two conditions anchor the work as demonstration systems, both strongly shaped by
+hormone–metabolism–microbiome cross-talk:
+
+- **Bacterial vaginosis (BV)** — dysbiosis of the vaginal microbiome, where the
+  interplay of microbial ecology, estrogen-regulated epithelial physiology, and
+  antibiotic/probiotic exposure governs recurrence (e.g. metronidazole,
+  *Lactobacillus crispatus*).
+- **Metabolic dysfunction-associated steatotic liver disease (MASLD)** — where gut
+  microbiome-derived metabolites and hormone-regulated hepatic metabolism drive
+  sex-specific efficacy of drugs such as resmetirom and GLP-1 receptor agonists.
+
+## The models to be built here
+
+MOSAIC's central idea is that explicit, executable interfaces between disparate
+modeling paradigms let independently developed models act as one integrated
+representation of hormone-regulated physiology. Four paradigms are planned, each
+keeping its own assumptions, units, and biological scope:
+
+| Planned model | What it contributes | Couples via |
+|---|---|---|
+| **Genome-scale metabolic models (GEMs)** | context-specific host-tissue + microbial metabolism | metabolite exchange, growth rate, reaction bounds |
+| **Mechanistic microbiome community models** | population dynamics, community composition, treatment resistance | bacterial composition, flux bounds |
+| **PKPD / whole-body compartment models** | systemic & local hormone and drug concentrations | hormone/therapeutic concentration, hormone recycling |
+| **Agent-based models (ABM)** | spatiotemporal bacterial–epithelial dynamics | cell location, agent behavior → community/metabolic params |
+
+**Hormone homeostasis is the coupling mechanism** that ties them together: outputs
+from one model become inputs or constraints for the others (metabolite exchange,
+hormone production/recycling, growth rates, community composition). This workspace
+is the Process-Bigraph **seam** that will make those interfaces executable.
+
+## Planned roadmap (grant Aims)
+
+1. **Aim 1 — Vaginal / BV.** A multi-scale model of the hormone-regulated vaginal
+   microbiome to predict local therapeutic efficacy (antibiotics, probiotics).
+2. **Aim 2 — Gut–liver / MASLD.** An integrated, sex-specific model of gut–liver
+   host–microbiome metabolism under hormonal control.
+3. **Aim 3 — Integration.** Couple the Aim 1 and Aim 2 models to simulate
+   hormone synthesis, microbial deconjugation, enterohepatic recycling, and
+   systemic transport across compartments.
+
+MOSAIC is led by the Papin lab (UVA) across a multi-institution team; this
+`mosaic-compose` workspace is the software/integration seam, built on
+[Vivarium](https://vivarium-collective.github.io/) / process-bigraph.
 
 Scaffolded from
 [viva-template](https://github.com/vivarium-collective/viva-template).
