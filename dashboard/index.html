@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<meta charset="UTF-8"><title>mosaic-compose</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mosaic-compose</title>
 <link rel="stylesheet" href="/mosaic-compose/dashboard/assets/style.css">
 <link rel="stylesheet" href="/mosaic-compose/dashboard/assets/chat.css">
 <link rel="stylesheet" href="/mosaic-compose/dashboard/assets/snapshot-readonly.css">
 <link rel="stylesheet" href="/mosaic-compose/dashboard/assets/progress-track.css">
+<!-- Phone/responsive layer (loaded last so its @media rules win). Ships to the
+     live server and every published read-only bundle via publish.py. -->
+<link rel="stylesheet" href="/mosaic-compose/dashboard/assets/responsive.css">
+<link rel="stylesheet" href="/mosaic-compose/dashboard/assets/search-palette.css">
 <!-- Apply the saved light/dark theme before first paint (no flash of light). -->
 <script>(function(){try{var t=localStorage.getItem('viv.theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <!-- item 41: when this tab was spawned via ?workspace=/?build= (workspace-picker.js's
@@ -812,9 +818,10 @@ a.viv-bs-commit:hover { text-decoration: underline; }
           <small>workbench</small>
         </div>
       </a>
-      <!-- Study search — a magnifier next to the collapse toggle; click to reveal
-           the search field below the nav (see _vivToggleRailSearch). -->
-      <button class="viv-rail-toggle viv-rail-search-btn" id="viv-rail-search-btn" type="button" aria-label="Search studies" title="Search studies" onclick="_vivToggleRailSearch()">
+      <!-- Global search — a magnifier next to the collapse toggle; opens the
+           pop-out search window across studies, catalog, registry, runs and
+           resources (see search-palette.js; ⌘K / Ctrl-K also opens it). -->
+      <button class="viv-rail-toggle viv-rail-search-btn" id="viv-rail-search-btn" type="button" aria-label="Search the workbench" title="Search everything (⌘K)" onclick="(window._vivOpenGlobalSearch||_vivToggleRailSearch)()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="viv-rail-toggle-svg">
           <circle cx="11" cy="11" r="7"/>
           <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -1039,9 +1046,7 @@ a.viv-bs-commit:hover { text-decoration: underline; }
 
     </div><!-- /.viv-rail-scroll -->
 
-    <!-- Light / dark theme toggle (pinned to the rail bottom). Low-priority
-         control: hidden until the rail corner is hovered (see .viv-rail-theme-footer)
-         so it stays out of the studies list's way. -->
+    <!-- Light / dark theme toggle (pinned to the rail bottom, always visible). -->
     <div class="viv-rail-footer viv-rail-theme-footer">
       <button class="viv-theme-toggle" id="viv-theme-toggle" type="button" role="switch" aria-checked="false"
               title="Toggle dark / light mode" aria-label="Toggle dark mode" onclick="_toggleTheme()">
@@ -1075,7 +1080,8 @@ a.viv-bs-commit:hover { text-decoration: underline; }
          serve` to run the full interactive workbench locally); there is no hosted
          interactive version. -->
     <div id="snapshot-banner">
-      <span>Read-only snapshot &mdash; run the workbench locally for the full interactive version.</span>
+      <span class="snap-msg-full">Read-only snapshot &mdash; run the workbench locally for the full interactive version.</span>
+      <span class="snap-msg-short">Read-only snapshot</span>
       <a id="snapshot-interactive-link"
          href="https://github.com/vivarium-collective/vivarium-workbench#readme"
          target="_blank" rel="noopener">Get vivarium-workbench on GitHub →</a>
@@ -1310,6 +1316,15 @@ a.viv-bs-commit:hover { text-decoration: underline; }
           </select>
         </span>
       </div>
+      <details class="find-candidates" id="find-candidates">
+        <summary>Find candidates</summary>
+        <div class="fc-form">
+          <input type="text" id="fc-inputs" placeholder="inputs: port or port:type, comma-separated">
+          <input type="text" id="fc-outputs" placeholder="outputs: port or port:type, comma-separated">
+          <button type="button" onclick="_findCandidates()">Find candidates</button>
+        </div>
+        <div id="fc-results"></div>
+      </details>
     </div>
 
     <div class="registry-tab-panel active" data-kind="composite"     id="registry-composites-container"><div class="viv-loading"><span class="viv-loading-spin" aria-hidden="true"></span><span>Loading&hellip;</span></div></div>
@@ -2081,7 +2096,7 @@ a.viv-bs-commit:hover { text-decoration: underline; }
   <!-- AI panel: the built-in chat, docked on the RIGHT (docs/ai-chat.md). static/chat.js builds the
      chat into #viv-ai; the settings sheet below is what the gear opens (static/ai-login.js).
      Live-only — hidden in the read-only snapshot. -->
-<aside id="viv-ai-panel" class="viv-ai-panel" hidden aria-label="VivaChat">
+<aside id="viv-ai-panel" class="viv-ai-panel" hidden aria-label="Chat">
   <div class="vp-resize" id="viv-ai-resize" title="Drag to resize"></div>
   <div class="vp-root" id="viv-ai"></div>
   <div id="viv-ai-card" class="vp-settings" hidden>
@@ -2095,6 +2110,7 @@ a.viv-bs-commit:hover { text-decoration: underline; }
       <div class="vp-field"><span>Model</span>
         <button id="viv-ai-model" class="vp-pill vp-select" type="button" aria-haspopup="menu" title="Choose a provider and model"></button>
       </div>
+      <div class="vp-hint" id="viv-ai-egress">Your messages, the results of tools the assistant runs and (if enabled under Capabilities) a summary of this workspace are sent to the selected provider's endpoint. Only a model on your own machine (Ollama) stays local.</div>
       <div class="vp-hint" id="viv-ai-status">checking…</div>
       <div id="viv-ai-key-row">
         <label class="vp-field"><span>API key</span>
@@ -2135,11 +2151,11 @@ a.viv-bs-commit:hover { text-decoration: underline; }
           <code id="viv-code-addr" class="viv-code-addr"></code>
         </div>
         <span class="vp-spacer"></span>
-        <button class="vp-icon" type="button" data-act="popout" title="Open in a separate window" aria-label="Pop out"
-                onclick="window.ProcessCode&&ProcessCode.popout()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+        <button class="vp-icon" type="button" data-act="browse" title="Browse Processes &amp; Composites" aria-label="Browse Processes and Composites"
+                onclick="window.ProcessCode&&ProcessCode.browseMenu(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         </button>
-        <button class="vp-icon" type="button" data-act="dock" title="Move panel" aria-label="Move panel"
+        <button class="vp-icon" type="button" data-act="dock" title="Move or pop out panel" aria-label="Move or pop out panel"
                 onclick="window.ProcessCode&&ProcessCode.dockMenu(this)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>
         </button>
@@ -2509,7 +2525,7 @@ Nothing on <code id="pr-base-display-2">main</code> changes until someone presse
      DataSource global that renderers call to fetch narrative data.
      local-server mode (default) fetches from the same-origin /api/* endpoints.
      Hosted mode (sub-projects #2/#3) will set a different config here. -->
-<script>window.__DASH_CONFIG__ = { mode: "snapshot", interactiveUrl: "https://github.com/vivarium-collective/mosaic-compose", basePath: "/mosaic-compose/dashboard", inputsDownloadBase: "https://github.com/vivarium-collective/mosaic-compose/raw/main", provenance: {"repo_slug": "vivarium-collective/mosaic-compose", "repo_url": "https://github.com/vivarium-collective/mosaic-compose", "commit": "99103170c238e66577f6b0d88e6cd97205d35e2a", "commit_url": "https://github.com/vivarium-collective/mosaic-compose/commit/99103170c238e66577f6b0d88e6cd97205d35e2a", "branch": "main", "lockfile": "uv.lock@f3ad42ea0cc7", "generated_at": "2026-10-02 15:17 UTC"} };</script>
+<script>window.__DASH_CONFIG__ = { mode: "snapshot", interactiveUrl: "https://github.com/vivarium-collective/mosaic-compose", basePath: "/mosaic-compose/dashboard", inputsDownloadBase: "https://github.com/vivarium-collective/mosaic-compose/raw/main", provenance: {"repo_slug": "vivarium-collective/mosaic-compose", "repo_url": "https://github.com/vivarium-collective/mosaic-compose", "commit": "4be80e439230c1f892cd22a957ee633cdb87f234", "commit_url": "https://github.com/vivarium-collective/mosaic-compose/commit/4be80e439230c1f892cd22a957ee633cdb87f234", "branch": "main", "lockfile": "uv.lock@c8f055052836", "generated_at": "2026-10-13 23:32 UTC"} };</script>
 <!-- Derive the global URL prefix from the (possibly publish-injected) config.
      Many renderers prefix workspace-root-absolute links (/studies/, /api/)
      with window.__BASE_PATH__ so they resolve when the read-only bundle is
@@ -2522,6 +2538,7 @@ Nothing on <code id="pr-base-display-2">main</code> changes until someone presse
 <script src="/mosaic-compose/dashboard/assets/data-source.js"></script>
 <script src="/mosaic-compose/dashboard/assets/render-helpers.js"></script>
 <script src="/mosaic-compose/dashboard/assets/toast.js"></script>
+<script src="/mosaic-compose/dashboard/assets/server-reload.js" onerror="/* reload watcher unavailable */"></script>
 <script src="/mosaic-compose/dashboard/assets/client.js" onerror="/* live mode unavailable */"></script>
 <script src="/mosaic-compose/dashboard/assets/aig-graph.js" onerror="/* aig-graph unavailable */"></script>
 <script src="/mosaic-compose/dashboard/assets/audit.js" onerror="/* audit view unavailable */"></script>
@@ -2547,6 +2564,8 @@ Nothing on <code id="pr-base-display-2">main</code> changes until someone presse
 <script src="/mosaic-compose/dashboard/assets/loom-embed.js" onerror="/* loom-embed unavailable */"></script>
 <script src="/mosaic-compose/dashboard/assets/checklist-select.js" onerror="/* checklist-select unavailable */"></script>
 <script src="/mosaic-compose/dashboard/assets/walkthrough.js" onerror="/* walkthrough unavailable */"></script>
+<script src="/mosaic-compose/dashboard/assets/mobile-nav.js" onerror="/* mobile-nav unavailable */"></script>
+<script src="/mosaic-compose/dashboard/assets/search-palette.js" onerror="/* global search unavailable */"></script>
 <script src="/mosaic-compose/dashboard/assets/github-login.js" onerror="/* github-login unavailable */"></script>
 <!-- chat-core.js already loaded above (shared by panel-dock.js + process-code.js). -->
 <script src="/mosaic-compose/dashboard/assets/ai-models.js" onerror="/* chat unavailable */"></script>
