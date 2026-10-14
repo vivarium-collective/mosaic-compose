@@ -28,6 +28,13 @@ main{padding:20px;margin:0 auto}
   box-sizing:border-box;
 }
 #investigation-dag-shell{ width: 100% !important; }
+/* Expand (snap-to-top) mode: grow the graph pane to nearly the full viewport so the
+   whole graph is easy to read, without going browser-fullscreen. Overrides the
+   inline height; the workbench rail/tabs stay available above/around it. */
+#investigation-dag-shell.aig-expanded{
+  height: 90vh !important; max-height: 90vh !important;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.28); scroll-margin-top: 8px;
+}
 #investigation-study-embed-panel{
   width: 100% !important; max-width: none !important;
   margin-top: 16px !important;
@@ -43,8 +50,13 @@ main{padding:20px;margin:0 auto}
 }
 #investigation-study-embed-frame{
   width: 100% !important;
-  height: 85vh !important;
-  min-height: 600px !important;
+  /* Height is set by _fitEmbedToContent (auto-grow to the study's content height,
+     floored at the viewport height) so the embedded study flows into the page's
+     SINGLE scrollbar. Do NOT force a fixed viewport height (e.g. 85vh !important)
+     here — that overrides the JS height and re-introduces the iframe's own inner
+     scrollbar (the double-scrollbar the user saw). */
+  display: block;
+  min-height: 600px;
 }
 main.study-page{max-width:none;padding:12px 16px;width:100%;box-sizing:border-box}
 
@@ -2837,6 +2849,21 @@ body.pcard-splitting iframe{ pointer-events:none; }
 }
 .inv-brief-tab:hover { color: #334155; background: #f8fafc; }
 .inv-brief-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+/* Decisions tab — highlighted (amber) to draw attention when decisions are open. */
+.inv-brief-tab-attn { color: #b45309; }
+.inv-brief-tab-attn:hover { color: #92400e; background: #fffbeb; }
+.inv-brief-tab-attn.active { color: #b45309; border-bottom-color: #b45309; }
+.inv-brief-tab-badge {
+  display: inline-block; margin-left: 6px; padding: 0 7px; border-radius: 10px;
+  font-size: 0.78em; font-weight: 700; line-height: 1.6; vertical-align: baseline;
+  background: #e2e8f0; color: #475569;
+}
+.inv-brief-tab-badge.attn { background: #b45309; color: #fff; animation: invDecPulse 1.9s ease-in-out infinite; }
+@keyframes invDecPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(180, 83, 9, 0.5); }
+  50%      { box-shadow: 0 0 0 5px rgba(180, 83, 9, 0); }
+}
+@media (prefers-reduced-motion: reduce) { .inv-brief-tab-badge.attn { animation: none; } }
 .inv-brief-panels { font-family: -apple-system, "Segoe UI", sans-serif; }
 .inv-brief-prose { font-size: 0.95em; line-height: 1.62; color: #334155; }
 .inv-brief-prose p { margin: 0 0 10px; }
@@ -4740,6 +4767,19 @@ details.overview-section[open] > summary.overview-label{ margin-bottom:8px; }
 :root[data-theme="dark"] .loom-out-ports .loom-port{ background:var(--surface-3); border-color:var(--border-2); }
 :root[data-theme="dark"] .loom-port-name{ color:#9db4e6; }
 
+/* "Methods · Simulations" study-card block (aig-graph.js _methodsBlockHtml) —
+   light mode. The block/header/label/value base look is set inline to match
+   the evidence-chain block; these classes carry the fidelity chip styling and
+   give the dark overrides below a handle. */
+.aig-methods-block{ /* container look set inline (matches evidence-chain) */ }
+.aig-methods-val{ word-break:break-word; }
+.aig-fidelity-chip{
+  display:inline-block; padding:0 7px; border-radius:9999px;
+  font-size:0.92em; font-weight:600; line-height:1.5; white-space:nowrap;
+}
+.aig-fidelity-chip.aig-fidelity-real{ background:#ccfbf1; color:#0f766e; }   /* teal — wraps a genuine simulator */
+.aig-fidelity-chip.aig-fidelity-repro{ background:#fef3c7; color:#92400e; }  /* amber — coarse-grained reproduction */
+
 /* Investigation view: biology story, graph canvas, and study-DAG node cards. */
 :root[data-theme="dark"] .inv-bio-story{ background:var(--surface-2) !important; border-color:var(--border) !important; color:var(--text); }
 :root[data-theme="dark"] .aig-zoom-mid,
@@ -4748,6 +4788,14 @@ details.overview-section[open] > summary.overview-label{ margin-bottom:8px; }
 :root[data-theme="dark"] .aig-orient-tb{ background:var(--bg) !important; }
 :root[data-theme="dark"] .iset-dag-node{ background:var(--surface) !important; border-color:var(--border) !important; color:var(--text); }
 :root[data-theme="dark"] .iset-dag-node .aig-claim-row:hover{ background:var(--hover); }
+/* "Methods · Simulations" block — dark. Inline base colours are overridden with
+   theme tokens (mirrors the .iset-dag-node / .aig-claim-row dark handling). */
+:root[data-theme="dark"] .aig-methods-block{ border-top-color:var(--border) !important; }
+:root[data-theme="dark"] .aig-methods-head{ color:var(--text) !important; }
+:root[data-theme="dark"] .aig-methods-label{ color:var(--text-muted) !important; }
+:root[data-theme="dark"] .aig-methods-val{ color:var(--text) !important; }
+:root[data-theme="dark"] .aig-fidelity-chip.aig-fidelity-real{ background:#124b43 !important; color:#5eead4 !important; }
+:root[data-theme="dark"] .aig-fidelity-chip.aig-fidelity-repro{ background:#3f2d12 !important; color:#fcd34d !important; }
 :root[data-theme="dark"] #investigation-dag-lead{ color:var(--text-muted) !important; }
 :root[data-theme="dark"] #investigation-dag-lead strong{ color:var(--text) !important; }
 :root[data-theme="dark"] .inv-lead-details summary{ color:var(--text-muted) !important; }
