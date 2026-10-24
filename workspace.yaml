@@ -4,10 +4,11 @@ created: "2026-10-02"
 plugin_version: 0.4.16
 package_path: mosaic_compose
 
-# Workspace rail icon — a "mosaic of cells" (honeycomb of nucleated cells).
-# Inlined as a data URI by the workbench (lib/report.py), so it renders the same
-# live and in the published snapshot, replacing the auto-generated "MC" monogram.
-icon: mosaic-icon.svg
+# Workspace rail icon — stained-glass figures standing together (a mosaic of
+# people), for MOSAIC. Inlined as a data URI by the workbench (lib/report.py),
+# so it renders the same live and in the published snapshot. 256x256 PNG kept
+# well under the workbench's 256 KiB inline cap.
+icon: mosaic-icon.png
 
 # Directory layout. New workspaces group their research directories under a
 # tidy `workspace/` subtree (the dirs below); the hidden `.pbg/` machine state
