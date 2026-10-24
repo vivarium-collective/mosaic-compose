@@ -15,7 +15,7 @@
 (function () {
   "use strict";
 
-  var GROUP_ORDER = ["Studies", "Investigations", "Catalog", "Registry", "Runs", "Resources", "Analysis"];
+  var GROUP_ORDER = ["Studies", "Investigations", "Catalog", "Registry", "Runs", "Resources", "Explore"];
   var PER_GROUP = 6; // cap rows shown per group (with a "+N more" note)
 
   var overlay, input, resultsEl, loadingEl;
@@ -158,7 +158,7 @@
         group: "Resources", tag: "Resource",
         title: title, sub: x.description || x.kind || x.type || x.path || "",
         hay: hayOf([title, x.description, x.kind, x.type, x.path, x.id, x.key]),
-        open: function () { goPage("workspace-inputs"); }
+        open: function () { goPage("resources"); }
       });
     });
     // Resources — references (papers.bib)
@@ -170,7 +170,7 @@
         group: "Resources", tag: "Reference",
         title: title, sub: [authors, x.year].filter(Boolean).join(" · ") || x.key || "",
         hay: hayOf([title, authors, x.year, x.key, x.id, x.journal]),
-        open: function () { goPage("workspace-inputs"); }
+        open: function () { goPage("resources"); }
       });
     });
 
@@ -179,7 +179,7 @@
       var title = x.title || x.name || x.id;
       if (!title) return;
       out.push({
-        group: "Analysis", tag: "Analysis",
+        group: "Explore", tag: "Explore",
         title: title, sub: x.description || x.summary || "",
         hay: hayOf([title, x.description, x.summary, x.id]),
         open: function () { goPage("visualizations"); }

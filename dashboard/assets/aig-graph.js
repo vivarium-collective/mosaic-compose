@@ -187,10 +187,13 @@
 
   function _layoutOptsForBand(band) {
     var b = Math.max(0, Math.min(2, band | 0));
+    // asksFull + plan turn ON only at the nearest band (full magnification):
+    // the card then shows the FULL question text and a "Plan" layer (declared
+    // contract, proposed mechanisms / models & methods, success criteria).
     var BANDS = [
-      { band: 0, cls: 'aig-zoom-far',  cardW: 150, xGap: 40, asks: false, finds: false, chain: false, followups: false },
-      { band: 1, cls: 'aig-zoom-mid',  cardW: 210, xGap: 64, asks: true,  finds: true,  chain: false, followups: false },
-      { band: 2, cls: 'aig-zoom-near', cardW: 320, xGap: 72, asks: true,  finds: true,  chain: true,  followups: true, methods: true },
+      { band: 0, cls: 'aig-zoom-far',  cardW: 150, xGap: 40, asks: false, finds: false, chain: false, followups: false, asksFull: false, plan: false },
+      { band: 1, cls: 'aig-zoom-mid',  cardW: 210, xGap: 64, asks: true,  finds: true,  chain: false, followups: false, asksFull: false, plan: false },
+      { band: 2, cls: 'aig-zoom-near', cardW: 360, xGap: 72, asks: true,  finds: true,  chain: true,  followups: true,  methods: true, asksFull: true, plan: true },
     ];
     return BANDS[b];
   }
@@ -204,9 +207,11 @@
   //     stack downward so a wide single row doesn't get squished into one column.
   //   - DEEP/NARROW graphs (long dependency chains, few studies per depth) go "LR"
   //     (left-to-right): a long chain reads naturally as a left->right sequence.
-  // A manual per-investigation toggle (persisted in localStorage) overrides this
-  // default entirely — see _getStoredGraphOrientation/_setGraphOrientation in
-  // walkthrough.js.
+  // NOTE: this shape heuristic is now only a LAST-RESORT fallback. The default
+  // orientation is AUTO from the container ASPECT (_aigAutoOrient in walkthrough.js:
+  // wide → LR, tall → TB; dock side when docked), re-applied on load and on every
+  // dock switch; the ⇄/⇅ buttons are a transient manual override (_setGraphOrientation).
+  // This function is used only when nothing can be measured (e.g. a headless render).
   function chooseGraphOrientation(depthCounts) {
     var counts = depthCounts || {};
     var levels = Object.keys(counts);
