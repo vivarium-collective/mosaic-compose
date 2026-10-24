@@ -6,6 +6,8 @@ requires-python = ">=3.11"
 dependencies = [
     "process-bigraph",
     "bigraph-schema",
+    # viva-cobra — COBRApy dynamic-FBA components for the metabolic-arm composites.
+    "viva-cobra @ git+https://github.com/vivarium-collective/viva-cobra.git@main",
     "bigraph-viz>=2.0.3",
     "pyyaml>=6.0",
     "jsonschema[format-nongpl]>=4.21",

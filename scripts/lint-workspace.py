@@ -160,7 +160,16 @@ def main() -> None:
                     _fail(f"dataset '{d['name']}' sha256 mismatch (recorded={sha[:16]}…, actual={actual[:16]}…)")
         elif url is not None:
             if not sha:
-                _fail(f"dataset '{d['name']}' has url but no sha256")
+                # External reference/accession URLs (e.g. an NCBI BioProject or
+                # BioLINCC landing page) have no single local file to hash, and
+                # this linter only verifies the hash for `path` datasets anyway.
+                # sha256 is encouraged for directly-downloadable file URLs but is
+                # not required for reference links — warn, don't fail.
+                print(
+                    f"LINT WARN: dataset '{d['name']}' has url but no sha256 "
+                    f"(external reference link — sha256 optional)",
+                    file=sys.stderr,
+                )
         else:
             _fail(f"dataset '{d['name']}' has neither path nor url")
 
