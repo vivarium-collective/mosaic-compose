@@ -17,19 +17,33 @@ readouts:
   description: Gardnerella relative abundance (BV-associated state)
   units: relative abundance
   status: available
+visualizations:
+- name: glv_competition
+  address: local:GLVCompetition
+  config:
+    inputs_map:
+      lactobacillus: stores.species.Lactobacillus
+      gardnerella: stores.species.Gardnerella
+      time: global_time
+- name: glv_phase_portrait
+  address: local:GLVPhasePortrait
+  config:
+    inputs_map:
+      lactobacillus: stores.species.Lactobacillus
+      gardnerella: stores.species.Gardnerella
 baseline:
 - name: mosaic_glv_vaginal
   composite: mosaic_compose.composites.community.mosaic_glv_vaginal
   params: {}
 variants: []
 runs:
-- name: mosaic_compose.composites.community.mosaic_glv_vaginal__1792879674__a2c0bb
+- name: mosaic_compose.composites.community.mosaic_glv_vaginal__1792881377__96552e
   status: completed
-  timestamp: 1792879678.532591
+  timestamp: 1792881381.737684
   emitter:
     kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_glv_vaginal/runs.mosaic_compose.composites.community.mosaic_glv_vaginal__1792879674__a2c0bb.zarr
-  env_id: 8ad67a2556a8b709
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_glv_vaginal/runs.mosaic_compose.composites.community.mosaic_glv_vaginal__1792881377__96552e.zarr
+  env_id: 871d47c1f3b0ef02
   generations: 1
   n_readouts: 2
   params: '{}'

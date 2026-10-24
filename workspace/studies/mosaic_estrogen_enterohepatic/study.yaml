@@ -22,19 +22,28 @@ readouts:
   description: Free estrogen in the gut lumen after microbial deconjugation
   units: relative concentration
   status: available
+visualizations:
+- name: estrogen_enterohepatic
+  address: local:EstrogenEnterohepatic
+  config:
+    inputs_map:
+      e_blood: stores.species.E_blood
+      eg_gut: stores.species.EG_gut
+      e_gut: stores.species.E_gut
+      time: global_time
 baseline:
 - name: mosaic_estrogen_enterohepatic
   composite: mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic
   params: {}
 variants: []
 runs:
-- name: mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic__1792879739__e09187
+- name: mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic__1792881393__44175d
   status: completed
-  timestamp: 1792879743.923754
+  timestamp: 1792881397.993288
   emitter:
     kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_estrogen_enterohepatic/runs.mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic__1792879739__e09187.zarr
-  env_id: 8ad67a2556a8b709
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_estrogen_enterohepatic/runs.mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic__1792881393__44175d.zarr
+  env_id: 871d47c1f3b0ef02
   generations: 1
   n_readouts: 3
   params: '{}'
