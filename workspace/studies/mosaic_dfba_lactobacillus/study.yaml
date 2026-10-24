@@ -1,0 +1,64 @@
+schema_version: 4
+name: mosaic_dfba_lactobacillus
+created: '2026-10-24'
+status: planned
+execution_status: planned
+phase: Design
+runtime:
+  default_emitter: xarray
+readouts:
+- name: biomass
+  store_path: biomass
+  description: Lactobacillus biomass (dynamic-FBA growth)
+  units: gDW/L
+  status: available
+- name: glucose
+  store_path: substrates.glucose
+  description: Glucose concentration in the shared substrate pool
+  units: mM
+  status: available
+- name: glutamate
+  store_path: substrates.glutamate
+  description: Glutamate concentration in the shared substrate pool
+  units: mM
+  status: available
+baseline:
+- name: mosaic_dfba_lactobacillus
+  composite: mosaic_compose.composites.dfba.mosaic_dfba_lactobacillus
+  params: {}
+variants: []
+runs:
+- name: mosaic_compose.composites.dfba.mosaic_dfba_lactobacillus__1792879805__7cdc5c
+  status: completed
+  timestamp: 1792879820.098399
+  emitter:
+    kind: xarray
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_dfba_lactobacillus/runs.mosaic_compose.composites.dfba.mosaic_dfba_lactobacillus__1792879805__7cdc5c.zarr
+  env_id: 8ad67a2556a8b709
+  generations: 1
+  n_readouts: 3
+  params: '{}'
+  computed_outcomes: {}
+  provenance:
+    params:
+      n_steps:
+        value: 60
+        source: resolved
+    params_captured_at: '2026-10-24'
+    params_source: dashboard-runner
+simulation_set:
+- name: mosaic_dfba_lactobacillus-baseline
+  kind: single
+  base_model: mosaic_compose.composites.dfba.mosaic_dfba_lactobacillus
+  is_baseline: true
+  status: ran
+  metrics:
+  - biomass
+  - glucose
+  - glutamate
+pipeline_gate:
+  gate_evaluator:
+    result: not_started
+    blocked_by: []
+    evaluated_by: code
+    diverges_from_authored: false

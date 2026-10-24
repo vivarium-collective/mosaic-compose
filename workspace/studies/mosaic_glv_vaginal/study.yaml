@@ -23,15 +23,17 @@ baseline:
   params: {}
 variants: []
 runs:
-- name: mosaic_compose.composites.community.mosaic_glv_vaginal__1792878968__f54ec9
+- name: mosaic_compose.composites.community.mosaic_glv_vaginal__1792879674__a2c0bb
   status: completed
-  timestamp: 1792878970.284975
+  timestamp: 1792879678.532591
   emitter:
-    kind: unknown
-  env_id: d9e84004de05727f
+    kind: xarray
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_glv_vaginal/runs.mosaic_compose.composites.community.mosaic_glv_vaginal__1792879674__a2c0bb.zarr
+  env_id: 8ad67a2556a8b709
+  generations: 1
+  n_readouts: 2
   params: '{}'
-  computed_outcomes:
-    _status: store_unresolved
+  computed_outcomes: {}
   provenance:
     params:
       n_steps:

@@ -125,11 +125,11 @@ description: |
 
 studies:
   # Dynamic-FBA metabolism — Lactobacillus GEM under a dynamic substrate
-  # environment (constraint-based model type; flux + biomass trajectories).
-- study-mosaic_dfba_lactobacillus-1fae42
+  # environment (constraint-based model type; substrate + biomass trajectories).
+- mosaic_dfba_lactobacillus
   # Community ODE (generalized Lotka-Volterra) — vaginal microbiome
-  # Lactobacillus vs Gardnerella competitive bistability (Stein 2013; inline
-  # Antimony via viva-tellurium).
+  # Lactobacillus vs Gardnerella; asymmetric competition makes Lactobacillus the
+  # protective competitive dominant (inline Antimony via viva-tellurium).
 - mosaic_glv_vaginal
   # Kinetic / PK-PD ODE — estrogen enterohepatic recycling; the `gus`
   # (estrobolome beta-glucuronidase) knob tunes systemic exposure (inline

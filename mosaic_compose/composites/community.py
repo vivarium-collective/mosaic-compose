@@ -23,10 +23,17 @@ from ._emit import strip_emitter
 _CORE_EXTENSIONS = [register_tellurium]
 
 # Vaginal microbiome gLV — Lactobacillus crispatus (protective, lactic-acid /
-# low-pH) vs Gardnerella vaginalis (BV-associated). Strong mutual competition
-# makes the system bistable: a Lactobacillus-dominant "healthy" basin and a
-# Gardnerella-dominant "BV" basin. Starting Lactobacillus-dominant, the
-# community resolves to the protective state as L suppresses G.
+# low-pH) vs Gardnerella vaginalis (BV-associated). The off-diagonal interaction
+# terms are asymmetric: Lactobacillus strongly suppresses Gardnerella (via lactic
+# acid / H2O2 / bacteriocins), while Gardnerella only weakly suppresses it. That
+# asymmetry makes Lactobacillus the competitive dominant — starting from a
+# Lactobacillus-leaning community, L competitively excludes G and the system
+# settles into the protective, low-pH "healthy" state.
+#
+# (Illustrative demo parameters — not calibrated to a specific clinical dataset.
+# They are chosen so L can invade a G-dominant state while G cannot invade an
+# L-dominant one: r_L + a_LG·G* > 0 and r_G + a_GL·L* < 0, with carrying
+# capacities K_i = r_i/|a_ii|.)
 _VAGINAL_GLV = """\
 model vaginal_glv
   # species = relative community abundance (0-1 scale)
@@ -38,10 +45,12 @@ model vaginal_glv
   r_L = 1.0;
   r_G = 0.85;
 
-  # interaction matrix a_ij (self-limitation on the diagonal; strong, asymmetric
-  # mutual inhibition off-diagonal -> competitive bistability).
-  a_LL = -1.0;   a_LG = -1.6;
-  a_GL = -0.9;   a_GG = -1.0;
+  # interaction matrix a_ij (self-limitation on the diagonal; asymmetric
+  # off-diagonal inhibition -> Lactobacillus competitively excludes Gardnerella).
+  # a_GL strongly negative: L strongly suppresses G; a_LG weakly negative: G only
+  # weakly suppresses L.
+  a_LL = -1.0;   a_LG = -0.6;
+  a_GL = -1.5;   a_GG = -1.0;
 
   # generalized Lotka-Volterra rate rules
   Lactobacillus' = Lactobacillus * (r_L + a_LL*Lactobacillus + a_LG*Gardnerella);
