@@ -34,6 +34,17 @@ visualizations: []
 # the Composites tab "Run" button and by `/viva-study run-baseline`.
 simulations: []
 
+# Expert knowledge documents (the source dossiers behind this workspace).
+expert_docs:
+  - name: "MOSAIC grant proposal (Papin et al.)"
+    path: workspace/references/expert/mosaic-proposal.pdf
+    sha256: "deb5f8e8fa2a72e13e92877df4d0e73baada098a5c2c9c8c531a34f6cfe55216"
+    contributor: agmon.eran@gmail.com
+    description: >-
+      The MOSAIC NIH proposal — the source for this workspace's Aims,
+      coupling biology, datasets, and modeling-tool choices. Every resource
+      in this tab is curated from it.
+
 # Workspace-scoped datasets (file path/url + format + provenance). Curated from
 # the MOSAIC proposal's "Reuse of existing resources" section (accessions below).
 datasets:
