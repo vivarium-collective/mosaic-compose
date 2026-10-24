@@ -1,0 +1,56 @@
+schema_version: 4
+name: mosaic_glv_vaginal
+created: '2026-10-24'
+status: planned
+execution_status: planned
+phase: Design
+runtime:
+  default_emitter: xarray
+readouts:
+- name: lactobacillus
+  store_path: stores.species.Lactobacillus
+  description: Lactobacillus relative abundance (protective / lactic-acid state)
+  units: relative abundance
+  status: available
+- name: gardnerella
+  store_path: stores.species.Gardnerella
+  description: Gardnerella relative abundance (BV-associated state)
+  units: relative abundance
+  status: available
+baseline:
+- name: mosaic_glv_vaginal
+  composite: mosaic_compose.composites.community.mosaic_glv_vaginal
+  params: {}
+variants: []
+runs:
+- name: mosaic_compose.composites.community.mosaic_glv_vaginal__1792878968__f54ec9
+  status: completed
+  timestamp: 1792878970.284975
+  emitter:
+    kind: unknown
+  env_id: d9e84004de05727f
+  params: '{}'
+  computed_outcomes:
+    _status: store_unresolved
+  provenance:
+    params:
+      n_steps:
+        value: 120
+        source: resolved
+    params_captured_at: '2026-10-24'
+    params_source: dashboard-runner
+simulation_set:
+- name: mosaic_glv_vaginal-baseline
+  kind: single
+  base_model: mosaic_compose.composites.community.mosaic_glv_vaginal
+  is_baseline: true
+  status: ran
+  metrics:
+  - lactobacillus
+  - gardnerella
+pipeline_gate:
+  gate_evaluator:
+    result: not_started
+    blocked_by: []
+    evaluated_by: code
+    diverges_from_authored: false

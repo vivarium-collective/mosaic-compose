@@ -22,7 +22,7 @@ status: planning
 # is recorded (not just a summary). sqlite is the portable default; xarray
 # suits large ensembles. A per-study runtime.emitter overrides this.
 runtime:
-  default_emitter: sqlite           # sqlite | xarray
+  default_emitter: xarray           # sqlite | xarray
 
 # object_of_evaluation: model       # critique #1 — what this investigation
 #                                    # primarily evaluates: method | model |
@@ -126,8 +126,22 @@ description: |
 studies:
   # Dynamic-FBA metabolism — Lactobacillus GEM under a dynamic substrate
   # environment (constraint-based model type; flux + biomass trajectories).
-  - study-mosaic_dfba_lactobacillus-1fae42
+- study-mosaic_dfba_lactobacillus-1fae42
+  # Community ODE (generalized Lotka-Volterra) — vaginal microbiome
+  # Lactobacillus vs Gardnerella competitive bistability (Stein 2013; inline
+  # Antimony via viva-tellurium).
+- mosaic_glv_vaginal
+  # Kinetic / PK-PD ODE — estrogen enterohepatic recycling; the `gus`
+  # (estrobolome beta-glucuronidase) knob tunes systemic exposure (inline
+  # Antimony via viva-tellurium).
+- mosaic_estrogen_enterohepatic
 
 expert_docs: []
 
 acceptance_criteria: []
+executive:
+  computed_verdict_status: in-progress
+  computed_acceptance:
+    criteria: []
+    unmet: []
+    diverges_from_authored: false
