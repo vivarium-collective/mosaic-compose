@@ -1,0 +1,298 @@
+name: structured_resources
+version: '1'
+description: >-
+  Structured scientific resources behind mosaic-compose — the coupling biology
+  (hormone-regulated metabolic pathways), the curated datasets that parameterize
+  and validate the models, and the external modeling engines each MOSAIC module
+  wraps. Curated from the MOSAIC proposal (Papin et al.). Paper citations live in
+  the References tab (workspace/references/papers.bib); this manifest cross-links
+  to them by bibtex key.
+evidence_dataset_qa_rule: >-
+  Each evidence-dataset records its public accession and the measurement it backs.
+  A dataset is only a validation anchor when a model prediction is compared to a
+  named figure/table in the cited source — anything else is context, not evidence.
+
+resources:
+
+  # ======================================================================
+  # Reaction pathways — the hormone/metabolic coupling MOSAIC makes executable
+  # ======================================================================
+  - id: pathway-estrogen-enterohepatic-recycling
+    type: reaction-pathway
+    name: "Estrogen enterohepatic recycling (the estrobolome)"
+    summary: >-
+      The central coupling mechanism of MOSAIC. Hepatic estrogens are conjugated
+      (glucuronidated/sulfated) and excreted in bile; gut bacterial
+      beta-glucuronidase (GUS) deconjugates them, freeing estrogen for
+      reabsorption and raising systemic levels. Microbiome composition therefore
+      modulates systemic estrogen, which in turn modulates hepatic metabolism and
+      vaginal epithelial physiology.
+    pathway: estrogen-homeostasis
+    role_in_campaign: >-
+      Links the gut community model (GUS activity), the PKPD model (systemic
+      estrogen), the hepatic GEM (conjugation/clearance) and the vaginal model.
+    campaign_tie: "Aim 3 — compartment-coupled integration"
+    network_summary:
+      key_enzymes: ["beta-glucuronidase (gusA)", "UGT1A estrogen glucuronosyltransferases", "steroid sulfatase"]
+      key_metabolites: ["estradiol", "estrogen-3-glucuronide", "estrone sulfate"]
+      compartments: ["liver", "bile", "gut lumen", "systemic blood", "vaginal mucosa"]
+    references: [ref-hu2023glucuronidase, ref-flores2012estrogen, ref-kwa2016estrobolome]
+
+  - id: pathway-hepatic-lipid-metabolism-masld
+    type: reaction-pathway
+    name: "Hepatic lipid metabolism in MASLD (sex-modulated)"
+    summary: >-
+      De novo lipogenesis, fatty-acid oxidation and VLDL export in the hepatocyte,
+      whose balance drives steatosis in MASLD. Estrogen, androgen and thyroid axes
+      each modulate these fluxes, producing the sex-specific MASLD phenotype the
+      liver GEM must reproduce.
+    pathway: hepatic-lipid-metabolism
+    role_in_campaign: "Metabolic arm of the gut-liver (MASLD) module"
+    campaign_tie: "Aim 2 — gut-liver MASLD"
+    network_summary:
+      key_processes: ["de novo lipogenesis", "fatty-acid beta-oxidation", "VLDL assembly/export", "bile-acid synthesis"]
+      hormonal_modulators: ["estrogen (ER-alpha/beta)", "androgen", "thyroid (resmetirom target THR-beta)"]
+    references: [ref-moore2023sexliver, ref-zhou2026gutliver]
+
+  - id: pathway-bile-acid-deconjugation
+    type: reaction-pathway
+    name: "Microbial bile-acid deconjugation and gut-liver signaling"
+    summary: >-
+      Gut bacterial bile-salt hydrolase (BSH) deconjugates primary bile acids,
+      reshaping the bile-acid pool that signals back to the liver (FXR/TGR5) and
+      is remodeled in MASLD. Couples microbial community composition to hepatic
+      metabolic regulation.
+    pathway: bile-acid-metabolism
+    role_in_campaign: "Microbiome -> liver feedback in the MASLD module"
+    campaign_tie: "Aim 2 — gut-liver MASLD"
+    network_summary:
+      key_enzymes: ["bile-salt hydrolase (BSH)", "7-alpha-dehydroxylase"]
+      key_metabolites: ["taurocholate", "glycochenodeoxycholate", "deoxycholate"]
+      receptors: ["FXR", "TGR5"]
+    references: [ref-smirnova2022nafld]
+
+  # ======================================================================
+  # Evidence datasets — public accessions that parameterize / validate models
+  # ======================================================================
+  - id: evidence-umb-hmp-vaginal
+    type: evidence-dataset
+    name: "UMB-HMP daily vaginal microbiota (PRJNA208535)"
+    summary: "Daily 16S vaginal profiles across BV episodes; 135 reproductive-age women over ~10 weeks."
+    citation: {bibtex_key: ravel2013umbhmp, doi: "10.1186/2049-2618-1-29"}
+    provenance_class: public-accession
+    species: ["Lactobacillus crispatus", "Lactobacillus iners", "Gardnerella vaginalis"]
+    original_measurement: {assay: "16S rRNA metagenomics", readout: "relative abundance time series", cohort: "135 women, daily x ~10 wk"}
+    license_access: "NCBI BioProject PRJNA208535"
+    source_asset_link: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA208535"
+
+  - id: evidence-vibrant-bv
+    type: evidence-dataset
+    name: "VIBRANT phase-1 L. crispatus LBP in BV"
+    summary: "Shotgun metagenomic profiles from a randomized multi-strain L. crispatus live-biotherapeutic trial in BV."
+    citation: {bibtex_key: potloane2026vibrant, doi: "10.1016/j.chom.2026.02.016"}
+    provenance_class: clinical-trial
+    original_measurement: {assay: "shotgun metagenomics", readout: "community composition pre/post LBP + metronidazole"}
+    control_arm: "placebo"
+    license_access: "per publication"
+
+  - id: evidence-bioml-gut
+    type: evidence-dataset
+    name: "Broad-OpenBiome BIO-ML gut (PRJNA544527)"
+    summary: "Longitudinal stool multiomics paired with a cultured isolate library from 80 healthy donors."
+    citation: {bibtex_key: poyet2019bioml, doi: "10.1038/s41591-019-0559-3"}
+    provenance_class: public-accession
+    original_measurement: {assay: "metagenomics + isolate genomes", readout: "longitudinal community + strain genomes"}
+    license_access: "NCBI BioProject PRJNA544527"
+    source_asset_link: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA544527"
+
+  - id: evidence-mcphases-hormone
+    type: evidence-dataset
+    name: "mcPHASES menstrual hormone dynamics (Physionet)"
+    summary: "Daily urinary estrogen/progesterone metabolites over a 3-month observation; parameterizes hormone dynamics."
+    citation: {bibtex_key: lin2026mcphases, doi: "10.1038/s41597-026-06805-3"}
+    provenance_class: public-accession
+    original_measurement: {assay: "urinary hormone metabolite immunoassay", readout: "daily estrogen & progesterone over cycle"}
+    license_access: "Physionet"
+    source_asset_link: "https://physionet.org/content/mcphases/"
+
+  - id: evidence-mesa-sexhormones-liverfat
+    type: evidence-dataset
+    name: "MESA endogenous sex hormones vs liver fat (BioLINCC HLB00640825a)"
+    summary: "Serum testosterone/estradiol/DHEA/SHBG vs CT-measured liver fat; sex-specific MASLD validation anchor."
+    citation: {bibtex_key: lazo2015mesa, doi: "10.1016/j.cgh.2014.12.033"}
+    provenance_class: public-accession
+    species: ["Homo sapiens"]
+    original_measurement: {assay: "serum hormone panel + CT liver attenuation", readout: "hormone-liver-fat association"}
+    license_access: "BioLINCC accession HLB00640825a"
+
+  - id: evidence-nafld-stool-multiomics
+    type: evidence-dataset
+    name: "NAFLD stool multiomics with bile-acid changes"
+    summary: "16S + transcriptomics + metabolomics of stool linking microbial bile-acid remodeling to NAFLD development."
+    citation: {bibtex_key: smirnova2022nafld, doi: "10.1002/hep.32568"}
+    provenance_class: published-figure
+    original_measurement: {assay: "16S + metabolomics (bile acids)", readout: "microbiome-bile-acid-NAFLD associations"}
+    license_access: "per publication"
+
+  # ======================================================================
+  # Imported engines — external modeling tools each MOSAIC module wraps
+  # (hidden type: indexed for the Registry, recorded here for provenance)
+  # ======================================================================
+  - id: engine-cobrapy
+    type: imported-engine
+    name: "COBRApy (constraint-based FBA)"
+    summary: "Flux-balance analysis / flux sampling over genome-scale metabolic models; the metabolic engine for MOSAIC's GEMs."
+    engine: COBRApy
+    wraps: "constraint-based reconstruction and analysis (FBA, pFBA, flux sampling)"
+    viva_package: viva-cobra
+    role: "metabolic flux (dFBA composite)"
+    used_by: ["pathway-hepatic-lipid-metabolism-masld", "pathway-bile-acid-deconjugation"]
+    references: [ref-jenior2023reconstructor]
+
+  - id: engine-reconstructor
+    type: imported-engine
+    name: "Reconstructor"
+    summary: "COBRApy-compatible automated genome-scale metabolic network reconstruction with parsimonious flux-based gap-filling (Papin lab)."
+    engine: Reconstructor
+    wraps: "automated GEM reconstruction + gap-filling"
+    role: "build microbe/tissue GEMs at scale"
+    references: [ref-jenior2023reconstructor]
+
+  - id: engine-ftinit
+    type: imported-engine
+    name: "ftINIT"
+    summary: "Fast task-driven integrative network inference for tissues; derives context-specific GEMs from transcriptomics (incl. scRNA-seq)."
+    engine: ftINIT
+    wraps: "context-specific GEM extraction from omics"
+    role: "tissue/environment-specific liver & gut GEMs"
+    references: [ref-robinson2020human1]
+
+  - id: engine-vivarium
+    type: imported-engine
+    name: "Vivarium / process-bigraph"
+    summary: "Interface and engine for integrative multiscale modeling; the composition layer that wires MOSAIC's modules (this workspace)."
+    engine: Vivarium
+    wraps: "multiscale model composition + scheduling"
+    viva_package: process-bigraph
+    role: "seam / composition layer"
+    references: [ref-agmon2022vivarium]
+
+  - id: engine-netlogo
+    type: imported-engine
+    name: "NetLogo"
+    summary: "Agent-based modeling platform for spatiotemporal bacterial-epithelial dynamics in the gut and vaginal microenvironments."
+    engine: NetLogo
+    wraps: "rule-based agent-based modeling"
+    role: "agent-based module"
+
+  - id: engine-aersmine
+    type: imported-engine
+    name: "AERSMine"
+    summary: "Mines the FDA Adverse Event Reporting System for drug/sex/adverse-event signals used to anchor sex-specific toxicity."
+    engine: AERSMine
+    wraps: "FDA AERS pharmacovigilance mining"
+    role: "adverse-event signal mining"
+
+  # ======================================================================
+  # Paper references — cross-link targets for the pathways/engines above
+  # (hidden type: these also appear as cards in the References tab)
+  # ======================================================================
+  - id: ref-hu2023glucuronidase
+    type: paper-reference
+    name: "Hu et al. 2023 — gut beta-glucuronidase in estrogen metabolism"
+    title: "Gut microbial beta-glucuronidase: a vital regulator in female estrogen metabolism"
+    authors: "Hu S, Ding Q, Zhang W, et al."
+    year: 2023
+    venue: "Gut Microbes"
+    doi: "10.1080/19490976.2023.2236749"
+    tags: [estrobolome, estrogen, beta-glucuronidase]
+    in_papers_bib: true
+    bibtex_key: hu2023glucuronidase
+  - id: ref-flores2012estrogen
+    type: paper-reference
+    name: "Flores et al. 2012 — fecal microbiome & systemic estrogens"
+    title: "Fecal microbial determinants of fecal and systemic estrogens and estrogen metabolites"
+    authors: "Flores R, Shi J, Fuhrman B, et al."
+    year: 2012
+    venue: "Journal of Translational Medicine"
+    doi: "10.1186/1479-5876-10-253"
+    tags: [estrobolome, estrogen]
+    in_papers_bib: true
+    bibtex_key: flores2012estrogen
+  - id: ref-kwa2016estrobolome
+    type: paper-reference
+    name: "Kwa et al. 2016 — the estrobolome"
+    title: "The intestinal microbiome and estrogen receptor-positive female breast cancer"
+    authors: "Kwa M, Plottel CS, Blaser MJ, Adams S"
+    year: 2016
+    venue: "JNCI"
+    doi: "10.1093/jnci/djw029"
+    tags: [estrobolome]
+    in_papers_bib: true
+    bibtex_key: kwa2016estrobolome
+  - id: ref-moore2023sexliver
+    type: paper-reference
+    name: "Moore et al. 2023 — sex-specific liver GEM"
+    title: "Metabolic modeling of sex-specific liver tissue suggests mechanism of differences in toxicological responses"
+    authors: "Moore CJ, Holstege CP, Papin JA"
+    year: 2023
+    venue: "PLOS Computational Biology"
+    doi: "10.1371/journal.pcbi.1010927"
+    tags: [GEM, sex-specific, liver, toxicology]
+    in_papers_bib: true
+    bibtex_key: moore2023sexliver
+  - id: ref-zhou2026gutliver
+    type: paper-reference
+    name: "Zhou et al. 2026 — gut-liver axis in MASLD"
+    title: "The gut-liver axis in MASLD: from host-microbiome crosstalk to precision therapeutics"
+    authors: "Zhou J, Zhu B, Bing Z, Wang T, Zhao Y"
+    year: 2026
+    venue: "Microorganisms"
+    doi: "10.3390/microorganisms14020471"
+    tags: [MASLD, gut-liver]
+    in_papers_bib: true
+    bibtex_key: zhou2026gutliver
+  - id: ref-smirnova2022nafld
+    type: paper-reference
+    name: "Smirnova et al. 2022 — bile acids & NAFLD"
+    title: "Metabolic reprogramming of the intestinal microbiome with functional bile acid changes underlie the development of NAFLD"
+    authors: "Smirnova E, Muthiah MD, Narayan N, et al."
+    year: 2022
+    venue: "Hepatology"
+    doi: "10.1002/hep.32568"
+    tags: [bile-acids, NAFLD, microbiome]
+    in_papers_bib: true
+    bibtex_key: smirnova2022nafld
+  - id: ref-jenior2023reconstructor
+    type: paper-reference
+    name: "Jenior et al. 2023 — Reconstructor"
+    title: "Reconstructor: a COBRApy compatible tool for automated genome-scale metabolic network reconstruction with parsimonious flux-based gap-filling"
+    authors: "Jenior ML, Glass EM, Papin JA"
+    year: 2023
+    venue: "Bioinformatics"
+    doi: "10.1093/bioinformatics/btad367"
+    tags: [GEM, COBRApy, reconstruction]
+    in_papers_bib: true
+    bibtex_key: jenior2023reconstructor
+  - id: ref-robinson2020human1
+    type: paper-reference
+    name: "Context-specific GEMs from scRNA-seq (ftINIT)"
+    title: "Generation and analysis of context-specific genome-scale metabolic models derived from single-cell RNA-seq data"
+    authors: "Robinson JL, et al."
+    year: 2020
+    venue: "PNAS"
+    doi: "10.1073/pnas.2217868120"
+    tags: [GEM, ftINIT, Human1]
+    in_papers_bib: true
+    bibtex_key: robinson2020human1
+  - id: ref-agmon2022vivarium
+    type: paper-reference
+    name: "Agmon et al. 2022 — Vivarium"
+    title: "Vivarium: an interface and engine for integrative multiscale modeling in computational biology"
+    authors: "Agmon E, Spangler RK, Skalnik CJ, et al."
+    year: 2022
+    venue: "Bioinformatics"
+    doi: "10.1093/bioinformatics/btac049"
+    tags: [vivarium, multiscale, composition]
+    in_papers_bib: true
+    bibtex_key: agmon2022vivarium
