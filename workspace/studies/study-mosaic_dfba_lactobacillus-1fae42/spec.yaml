@@ -1,0 +1,11 @@
+name: study-mosaic_dfba_lactobacillus-1fae42
+baseline: mosaic_dfba_lactobacillus
+variants:
+- name: mosaic_dfba_lactobacillus
+  source: mosaic_compose.composites.dfba.mosaic_dfba_lactobacillus
+  document: ./composites/mosaic_dfba_lactobacillus.yaml
+comparisons: []
+conclusions: ''
+question: ''
+hypothesis: ''
+status: draft

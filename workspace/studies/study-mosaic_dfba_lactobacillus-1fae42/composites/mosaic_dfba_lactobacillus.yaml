@@ -1,0 +1,79 @@
+schema:
+  substrates: map[concentration]
+  biomass: mass
+  uptakes: overwrite[map[float]]
+  interval: overwrite[float]
+state:
+  substrates:
+    glucose: 20.0
+    glutamate: 5.0
+  biomass: 0.01
+  uptakes:
+    glucose: 0.0
+    glutamate: 0.0
+  interval: 0.05
+  emitter:
+    _type: step
+    address: local:RAMEmitter
+    config:
+      emit:
+        global_time: node
+        biomass: node
+        substrates: node
+    inputs:
+      global_time:
+      - global_time
+      biomass:
+      - biomass
+      substrates:
+      - substrates
+  uptake:
+    _type: process
+    address: local:!viva_cobra.processes.michaelis_menten.MichaelisMentenUptakeProcess
+    config:
+      resources:
+      - glucose
+      - glutamate
+      kinetic_params:
+        glucose:
+        - 0.5
+        - 10.0
+        glutamate:
+        - 0.5
+        - 5.0
+    interval: 0.05
+    inputs:
+      substrates:
+      - substrates
+      biomass:
+      - biomass
+    outputs:
+      uptakes:
+      - uptakes
+      interval:
+      - interval
+  fba:
+    _type: step
+    address: local:!viva_cobra.processes.fba.FBAStep
+    config:
+      model_file: iNF517.xml
+      substrate_update_reactions:
+        glucose: EX_glc__D_e
+        glutamate: EX_glu__L_e
+      bounds: {}
+      biomass_reaction: BIOMASS_LLA
+    inputs:
+      uptakes:
+      - uptakes
+      substrates:
+      - substrates
+      biomass:
+      - biomass
+      interval:
+      - interval
+    outputs:
+      substrates:
+      - substrates
+      biomass:
+      - biomass
+global_time_precision: 2
