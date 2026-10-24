@@ -43,7 +43,7 @@ simulations: []
 expert_docs:
 - name: "MOSAIC grant proposal (Papin et al.)"
   path: workspace/references/expert/mosaic-proposal.pdf
-  sha256: "deb5f8e8fa2a72e13e92877df4d0e73baada098a5c2c9c8c531a34f6cfe55216"
+  sha256: "6681db5e1fbe571b0648fd27cf76e1823ab2cbe786368267d2b9de946417c47e"
   contributor: agmon.eran@gmail.com
   description: >-
     The MOSAIC NIH proposal — the source for this workspace's Aims,
