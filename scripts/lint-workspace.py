@@ -159,8 +159,13 @@ def main() -> None:
                 if actual != sha:
                     _fail(f"dataset '{d['name']}' sha256 mismatch (recorded={sha[:16]}…, actual={actual[:16]}…)")
         elif url is not None:
-            if not sha:
-                _fail(f"dataset '{d['name']}' has url but no sha256")
+            # url-only datasets are external pointers (e.g. NCBI BioProject /
+            # ENA accession landing pages), not checksummable single-file
+            # artifacts. The lint only ever verifies sha256 against a local
+            # `path` (above), so a url-only entry's sha256 is never validated —
+            # requiring it added no integrity value. sha256 is therefore
+            # optional for url-only datasets; if present it's informational.
+            pass
         else:
             _fail(f"dataset '{d['name']}' has neither path nor url")
 
