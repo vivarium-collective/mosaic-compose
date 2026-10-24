@@ -34,10 +34,107 @@ visualizations: []
 # the Composites tab "Run" button and by `/viva-study run-baseline`.
 simulations: []
 
-# Workspace-scoped datasets (file path + format + provenance). Populated by
-# the Inputs tab "Attach dataset" action.
-datasets: []
+# Expert knowledge documents (the source dossiers behind this workspace).
+expert_docs:
+- name: "MOSAIC grant proposal (Papin et al.)"
+  path: workspace/references/expert/mosaic-proposal.pdf
+  sha256: "deb5f8e8fa2a72e13e92877df4d0e73baada098a5c2c9c8c531a34f6cfe55216"
+  contributor: agmon.eran@gmail.com
+  description: >-
+    The MOSAIC NIH proposal — the source for this workspace's Aims,
+    coupling biology, datasets, and modeling-tool choices. Every resource
+    in this tab is curated from it.
 
+# Workspace-scoped datasets (file path/url + format + provenance). Curated from
+# the MOSAIC proposal's "Reuse of existing resources" section (accessions below).
+datasets:
+  # --- Vaginal / BV microbiome (Aim 1) ---
+- name: "UMB-HMP vaginal microbiome (PRJNA208535)"
+  url: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA208535"
+  format: metagenomics
+  source: "Ravel et al. 2013, Microbiome"
+  description: "Daily vaginal microbiota time series across BV episodes; 135 women
+    x ~10 weeks. Basis for vaginal digital twins."
+  claims: []
+- name: "Vaginal metatranscriptomics, metronidazole (PRJEB21446)"
+  url: "https://www.ebi.ac.uk/ena/browser/view/PRJEB21446"
+  format: metatranscriptomics
+  source: "Deng et al. 2018, mSphere"
+  description: "Vaginal microbiome metatranscriptomes; metronidazole protection mechanisms
+    in BV."
+  claims: []
+- name: "Ectocervical RNA-seq, BV + metronidazole (PRJNA731542)"
+  url: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA731542"
+  format: transcriptomics
+  source: "Serebrenik et al. 2021, J Infect Dis"
+  description: "Host ectocervical transcriptomes tied to metronidazole treatment response;
+    cervicovaginal epithelial models."
+  # --- Gut / MASLD microbiome (Aim 2) ---
+  claims: []
+- name: "Human Microbiome Project HMP1-II gut (PRJNA48479)"
+  url: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA48479"
+  format: metagenomics
+  source: "Lloyd-Price et al. 2017, Nature"
+  description: "249 gut metagenomes; healthy reference for in silico gut cohorts."
+  claims: []
+- name: "Broad-OpenBiome BIO-ML gut (PRJNA544527)"
+  url: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA544527"
+  format: metagenomics
+  source: "Poyet et al. 2019, Nature Medicine"
+  description: "Longitudinal stool multiomics + isolate library from 80 donors."
+  claims: []
+- name: "MASLD gut microbiome, MEC (PRJNA629344)"
+  url: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA629344"
+  format: metagenomics
+  source: "Hullar et al. 2021, Gut Microbes"
+  description: "16S + shotgun metagenomics associated with hepatic adiposity (MASLD)."
+  # --- Host liver transcriptomics / proteomics ---
+  claims: []
+- name: "Liver transcriptomics + plasma proteomics, MASLD (PRJNA1154708)"
+  url: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1154708"
+  format: "transcriptomics+proteomics"
+  source: "Yang et al. 2025, Cell Reports Medicine"
+  description: "Paired liver transcriptomes + plasma proteomes across liver-disease
+    etiologies; sex-balanced. Hepatic GEM context (ftINIT)."
+  claims: []
+- name: "BARICO liver RNA-seq, MASLD (PRJNA1051582)"
+  url: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1051582"
+  format: transcriptomics
+  source: "BARICO cohort"
+  description: "Bulk RNA-seq from MASLD liver biopsies; constrains hepatic metabolic
+    models."
+  claims: []
+- name: "HuBMAP gut epithelium scRNA-seq (HBM692.JRZB.356)"
+  url: "https://portal.hubmapconsortium.org/browse/collection/HBM692.JRZB.356"
+  format: scRNA-seq
+  source: "HuBMAP; Hickey et al. 2023, Nature"
+  description: "Single-cell transcriptomes across 8 intestinal sites; gut epithelial
+    cell models."
+  # --- Hormone / endocrine (Aim 3 coupling) ---
+  claims: []
+- name: "mcPHASES menstrual hormone dataset (Physionet)"
+  url: "https://physionet.org/content/mcphases/"
+  format: "hormone timeseries"
+  source: "Lin et al. 2026, Scientific Data"
+  description: "Daily urinary estrogen/progesterone metabolites over a 3-month menstrual
+    observation; hormone-dynamics parameterization."
+  claims: []
+- name: "MESA sex hormones & liver fat (BioLINCC HLB00640825a)"
+  url: "https://biolincc.nhlbi.nih.gov/studies/mesa/"
+  format: "clinical/hormone"
+  source: "Lazo et al. 2015, Clin Gastroenterol Hepatol (MESA AC 291)"
+  description: "Testosterone, estradiol, DHEA, SHBG vs liver fat in postmenopausal
+    women & men (MASLD)."
+  # --- Pharmacovigilance ---
+  claims: []
+- name: "FDA Adverse Event Reporting System (via AERSMine)"
+  url: "https://research.cchmc.org/aers/"
+  format: "adverse-event reports"
+  source: "AERSMine; Sarangdhar et al. 2016, Nat Biotechnol"
+  description: "Drug/sex/adverse-event signal mining for sex-specific toxicity (resmetirom,
+    metronidazole, GLP-1 RAs)."
+
+  claims: []
 references_bib: workspace/references/papers.bib
 server:
   enabled: false
