@@ -14,8 +14,12 @@ from process_bigraph.composite_generator import composite_generator
 from viva_tellurium import make_tellurium_document
 from viva_tellurium.composites import register_tellurium
 
-# Register viva-tellurium's TelluriumProcess + UTC step + RAM emitter + the
-# species-time-series visualization onto whatever core realizes the composite.
+from ._emit import strip_emitter
+
+# Register viva-tellurium's TelluriumProcess + UTC step + the species-time-series
+# visualization onto whatever core realizes the composite. (The RAM emitter it
+# also registers is unused here — Foundations composites emit via XArray; see
+# ._emit.)
 _CORE_EXTENSIONS = [register_tellurium]
 
 # Vaginal microbiome gLV — Lactobacillus crispatus (protective, lactic-acid /
@@ -58,8 +62,8 @@ end
     core_extensions=_CORE_EXTENSIONS,
 )
 def mosaic_glv_vaginal(core=None):
-    return make_tellurium_document(
+    return strip_emitter(make_tellurium_document(
         model=_VAGINAL_GLV,
         model_format="antimony",
         interval=0.2,
-    )
+    ))

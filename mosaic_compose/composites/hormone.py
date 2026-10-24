@@ -18,6 +18,8 @@ from process_bigraph.composite_generator import composite_generator
 from viva_tellurium import make_tellurium_document
 from viva_tellurium.composites import register_tellurium
 
+from ._emit import strip_emitter
+
 _CORE_EXTENSIONS = [register_tellurium]
 
 # Three-compartment estrogen PK with microbial deconjugation:
@@ -59,8 +61,8 @@ end
     core_extensions=_CORE_EXTENSIONS,
 )
 def mosaic_estrogen_enterohepatic(core=None):
-    return make_tellurium_document(
+    return strip_emitter(make_tellurium_document(
         model=_ESTROGEN_EHC,
         model_format="antimony",
         interval=0.25,
-    )
+    ))
