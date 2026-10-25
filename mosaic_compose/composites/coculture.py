@@ -91,15 +91,20 @@ def _add_organism(state, schema, doc, suffix):
     core_extensions=_CORE_EXTENSIONS,
 )
 def mosaic_dfba_coculture(core=None):
+    # Deliberately MODERATE, comparable uptake kinetics (lower Vmax, higher Km)
+    # so neither organism instantly monopolizes the glucose: the competition
+    # unfolds gradually over the run instead of a one-tick blow-out. E. coli is a
+    # slightly faster glucose specialist; Lactobacillus is a hair slower but holds
+    # a private glutamate niche — so it persists rather than being wiped out.
     ecoli = dfba_document(
-        _cfg("ecoli_core", {"glucose": [0.5, 10.0], "acetate": [0.5, 2.0]}),
-        dt=_DT, initial_substrates={"glucose": 15.0, "acetate": 0.0},
-        initial_biomass=0.01,
+        _cfg("ecoli_core", {"glucose": [1.0, 2.6], "acetate": [0.5, 2.0]}),
+        dt=_DT, initial_substrates={"glucose": 10.0, "acetate": 0.0},
+        initial_biomass=0.004,
     )
     lacto = dfba_document(
-        _cfg("iNF517", {"glucose": [0.5, 10.0], "glutamate": [0.5, 5.0]}),
-        dt=_DT, initial_substrates={"glucose": 15.0, "glutamate": 5.0},
-        initial_biomass=0.01,
+        _cfg("iNF517", {"glucose": [1.0, 2.2], "glutamate": [0.5, 5.0]}),
+        dt=_DT, initial_substrates={"glucose": 10.0, "glutamate": 8.0},
+        initial_biomass=0.004,
     )
     state: dict = {"interval": _DT}
     schema: dict = {"interval": "overwrite[float]"}
