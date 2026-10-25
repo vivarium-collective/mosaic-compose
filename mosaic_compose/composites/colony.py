@@ -1,17 +1,18 @@
 """Spatial agent-based biofilm colony — the ABM arm of the Foundations demo.
 
-Built on viva-munk's pymunk multibody physics: rod-shaped cells grow and divide
-in a 2-D chamber, pushing on each other as the colony packs. This is the spatial
-/ agent-based model TYPE — distinct from the ODE, FBA, and composition arms.
+Based directly on viva-munk's own biofilm experiment (its
+``EXPERIMENT_REGISTRY['with_particles']`` entry): rod-shaped cells grow by an
+adder rule (~40-min doubling) and divide, pushing on each other and on a bath of
+passive particles via pymunk physics, packing a 2-D chamber. This is the
+spatial / agent-based model TYPE — distinct from the ODE, FBA, and composition
+arms.
 
-viva-munk ships the physics (`PymunkProcess`), the adder growth+division
-(`AdderGrowDivide`), and a spatial colony renderer (`MultibodyVizStep`), but its
-`biofilm_document()` builder seeds cells from an uncontrolled RNG and uses a
-growth rate too low to divide in a short run. Here we assemble the document
-ourselves: a seeded initial placement of small rod cells, a high adder growth
-rate so the colony visibly divides, and a tiny `CountCells` step that emits the
-scalar colony size each tick (the `cells` map itself is spatial and not
-xarray-emittable, so the growth CURVE needs a scalar readout).
+We take viva-munk's real document + config unchanged (so the dynamics are theirs,
+not hand-tuned) and only add a tiny ``CountCells`` step that projects the spatial
+``cells`` map (``map[pymunk_agent]``, not xarray-emittable) to a scalar colony
+size each tick — written with ``overwrite`` so it records the CURRENT count, not
+a running sum. viva-munk's ``MultibodyVizStep`` (already in the document) renders
+the live colony spatially; the run surfaces it to the study's native gallery.
 """
 from __future__ import annotations
 
@@ -19,92 +20,75 @@ from process_bigraph.composite import Step
 from process_bigraph.composite_generator import composite_generator
 
 from viva_munk.composites import _register_pymunk_types, _register_processes
-from viva_munk.processes.grow_divide import add_adder_grow_divide_to_agents
-from viva_munk.processes.multibody import make_initial_state
-from viva_munk.visualizations import make_multibody_viz_step, make_viz_stores
+from viva_munk.experiments.documents.biofilm import biofilm_document
 
 
 class CountCells(Step):
     """Emit the colony size (number of cells) as a scalar each tick.
 
-    The `cells` store is a ``map[pymunk_agent]`` (spatial, variable-length), which
-    the XArrayEmitter drops; this projects it to a scalar so the colony-growth
-    trajectory is emittable + plottable.
+    ``cells`` is a ``map[pymunk_agent]`` (spatial, variable-length), dropped by
+    the XArrayEmitter; this projects it to a scalar. ``overwrite[integer]`` so the
+    store holds the current count rather than accumulating it across ticks.
     """
 
     def inputs(self):
         return {"cells": "map[pymunk_agent]"}
 
     def outputs(self):
-        return {"cell_count": "integer"}
+        return {"cell_count": "overwrite[integer]"}
 
     def update(self, state):
-        cells = state.get("cells") or {}
-        return {"cell_count": len(cells)}
+        return {"cell_count": len(state.get("cells") or {})}
 
 
 def _register_colony(core):
-    # viva-munk's register helpers mutate the core in place and may return None,
-    # so call them for side effect and keep our handle on `core`.
+    # Register viva-munk's pymunk types (pymunk_agent, …) + processes + viz onto
+    # the run core (they mutate in place and may return None, so don't reassign),
+    # then add our projection step.
     _register_pymunk_types(core)
     _register_processes(core)
     core.register_link("CountCells", CountCells)
     return core
 
 
-_ENV = 30.0
-# Finer physics/emit interval so the colony-growth trajectory is well sampled
-# (the per-hour growth rate is time-based, so a smaller step just yields more,
-# smaller updates over the same simulated time — same final colony, denser curve).
-_INTERVAL = 6.0
+# viva-munk's biofilm document with its real adder growth + pymunk physics,
+# configured as a clean dividing colony (no passive-particle bath — it only
+# clutters the figure and bloats the snapshot GIF). The GROWTH dynamics are
+# viva-munk's, unchanged; only the chamber size + seed count are set here.
+_N_CELLS = 5
+_ENV_SIZE = 50
+_EXPT_TIME = 10800.0  # 3 h of simulated growth → a well-grown colony
+_CELL_COUNT_SEED = _N_CELLS
 
 
 @composite_generator(
     name="mosaic_biofilm_colony",
     description=(
-        "Spatial agent-based biofilm: rod-shaped cells grow, divide, and push on "
-        "each other via pymunk physics (viva-munk), packing a 2-D colony. The ABM "
-        "/ spatial model type. Emits colony size (cell count) per tick; the "
-        "MultibodyViz step renders the spatial colony."
+        "Spatial agent-based biofilm (viva-munk's biofilm_document): rod cells "
+        "grow by an adder rule (~40-min doubling) and divide, pushing on each "
+        "other via pymunk physics as the colony packs a 2-D chamber. The ABM / "
+        "spatial model type. Emits colony size (cell count); viva-munk's "
+        "MultibodyViz renders the spatial colony."
     ),
-    default_n_steps=60,
+    default_n_steps=_EXPT_TIME,
     core_extensions=[_register_colony],
 )
 def mosaic_biofilm_colony(core=None):
-    state = make_initial_state(
-        n_microbes=3, n_particles=0, env_size=_ENV, seed=7,
-        microbe_length_range=(2.0, 2.0), microbe_radius_range=(0.5, 0.5),
-        microbe_mass_density=0.02,
-    )
-    # High adder growth rate so the colony visibly divides within a short run.
-    # Zero the stochastic CVs so the colony grows deterministically (exponential
-    # growth otherwise amplifies per-cell rate noise into huge run-to-run
-    # variance in the final count).
-    add_adder_grow_divide_to_agents(
-        state, agents_key="cells",
-        config={"agents_key": "cells", "alpha_mean_per_h": 150.0,
-                "alpha_cv": 0.0, "delta_cv": 0.0, "division_noise_cv": 0.0},
-    )
-    # pymunk physics integrator: resolve cell-cell overlap each tick.
-    state["multibody"] = {
-        "_type": "process", "address": "local:PymunkProcess",
-        "config": {"env_size": _ENV}, "interval": _INTERVAL,
-        "inputs": {"segment_cells": ["cells"], "circle_particles": ["particles"]},
-        "outputs": {"segment_cells": ["cells"], "circle_particles": ["particles"]},
-    }
-    # Project the spatial colony to a scalar size each tick (xarray-emittable).
-    state["cell_count"] = 3
+    doc = biofilm_document({
+        "env_size": _ENV_SIZE, "n_cells": _N_CELLS, "n_initial_particles": 0,
+    })
+    state = doc.get("state", doc)
+    # Rename the viz step key for a cleaner native-gallery panel title.
+    if "multibody_viz" in state:
+        state["colony_snapshot"] = state.pop("multibody_viz")
+    # Drop viva-munk's per-cell mass-traces panel to keep the figure set focused
+    # (colony snapshot + colony-size curve); the dynamics are unchanged.
+    state.pop("cell_mass_traces", None)
+    # Scalar colony-size projection (xarray-emittable).
+    state["cell_count"] = _CELL_COUNT_SEED
     state["count_cells"] = {
         "_type": "step", "address": "local:CountCells",
         "inputs": {"cells": ["cells"]},
         "outputs": {"cell_count": ["cell_count"]},
     }
-    # Spatial SNAPSHOT: viva-munk's MultibodyVizStep renders the live colony
-    # (cell positions/orientations) to HTML directly from the state tree — no
-    # emitter involved, so the spatial `cells` map is rendered in full. The run's
-    # _render_viz (render_results) collects it into viz.json → the study's native
-    # gallery (which now also accepts the step's {'html': ...} payload shape).
-    state["stores"] = make_viz_stores()
-    state["colony_snapshot"] = make_multibody_viz_step(
-        title="Biofilm colony", env_width=_ENV, env_height=_ENV, has_particles=False)
     return {"state": state}

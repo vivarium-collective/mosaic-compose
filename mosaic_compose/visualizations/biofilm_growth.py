@@ -31,9 +31,10 @@ class BiofilmColonyGrowth(Visualization):
 
     @staticmethod
     def generate_state(config=None):
+        # viva-munk's biofilm experiment: ~5 -> ~180 cells over 4 h.
         return {
-            "time": [0, 20, 40, 60, 80, 100, 120, 140, 160],
-            "cell_count": [3, 6, 9, 16, 20, 26, 38, 44, 55],
+            "time": [0, 1800, 3600, 5400, 7200, 9000, 10800, 12600, 14400],
+            "cell_count": [5, 7, 10, 15, 21, 39, 63, 106, 181],
         }
 
     def update(self, state):
@@ -60,10 +61,10 @@ class BiofilmColonyGrowth(Visualization):
         layout = {
             "title": {
                 "text": "Agent-based biofilm: the colony grows and divides<br>"
-                        "<span style='font-size:12px;color:#64748b'>pymunk rod cells grow, divide, and pack a 2-D chamber (viva-munk); count on a log axis</span>",
+                        "<span style='font-size:12px;color:#64748b'>viva-munk biofilm experiment — adder-rule growth (~40-min doubling) + pymunk packing; count on a log axis</span>",
                 "x": 0.02, "xanchor": "left", "font": {"size": 17},
             },
-            "xaxis": {"title": {"text": "time (arb. units)"}, "zeroline": False,
+            "xaxis": {"title": {"text": "time (s)"}, "zeroline": False,
                       "gridcolor": "rgba(148,163,184,0.18)"},
             "yaxis": {"title": {"text": "colony size (cells, log)"}, "type": "log",
                       "range": [0, hi], "gridcolor": "rgba(148,163,184,0.18)"},
@@ -78,8 +79,8 @@ class BiofilmColonyGrowth(Visualization):
             }],
         }
         caption = (
-            "Each rod cell grows by an adder rule and divides when it adds a fixed "
-            "increment; pymunk resolves the physical packing as the colony fills the "
+            "viva-munk's biofilm_document (adder growth + pymunk physics, unchanged): "
+            "rod cells grow and divide, pushing on each other as the colony packs the "
             "chamber. The colony store is spatial (per-cell positions, map[pymunk_agent]); "
             "a small CountCells step projects it to this emittable colony-size trajectory."
         )
