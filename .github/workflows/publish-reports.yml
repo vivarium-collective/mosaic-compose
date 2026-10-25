@@ -58,7 +58,7 @@ jobs:
         run: uv python install 3.12.9
 
       - name: Install dependencies (incl. vivarium-workbench)
-        run: uv sync --extra dev || uv sync
+        run: uv sync --extra dev --extra foundations || uv sync --extra dev || uv sync
 
       - name: Install Playwright + Chromium
         run: |
