@@ -10,6 +10,20 @@ package_path: mosaic_compose
 # well under the workbench's 256 KiB inline cap.
 icon: mosaic-icon.png
 
+# Runtime defaults. Every Foundations study emits through the XArrayEmitter
+# (streaming labelled-array / zarr sink) — the one consistent observation sink
+# across the metabolic, community, hormone, and ABM arms. The workbench builds
+# and injects a correctly-configured XArrayEmitter from this choice; composites
+# only strip the library builders' standalone RAM node (mosaic_compose.composites._emit).
+runtime:
+  default_emitter: xarray
+  # These are single-generation models (ODE / dynamic-FBA — no cell division),
+  # so one generation per run. This also keeps study runs on the generic
+  # single-gen XArray write path: the workbench's default of 3 generations
+  # otherwise misclassifies them as multi-gen and falls back to sqlite (the
+  # division-aware xarray drive is v2ecoli-only).
+  max_generations: 1
+
 # Directory layout. New workspaces group their research directories under a
 # tidy `workspace/` subtree (the dirs below); the hidden `.pbg/` machine state
 # stays at the root like `.git/`. Tooling (dashboard, lint, skills) resolves

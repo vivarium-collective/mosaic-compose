@@ -23,6 +23,19 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7.4"]
+# MOSAIC Foundations — the capabilities-showcase investigation imports real
+# ecosystem simulators, one per model type, so the demo spans the variety the
+# framework supports. Kept as an optional extra (not base deps) so the standard
+# publish/CI install stays light; the Foundations studies + the publish job that
+# renders them install `.[foundations]`.
+foundations = [
+    # ODE / kinetic — Stein-2013 gLV community + estrogen enterohepatic PK (Antimony/SBML).
+    "viva-tellurium @ git+https://github.com/vivarium-collective/viva-tellurium.git@main",
+    # Spatial / ABM — pymunk particle colony, Cellular Potts gut crypt, tyssue vertex sheet.
+    "viva-munk @ git+https://github.com/vivarium-collective/viva-munk.git@main",
+    "viva-cpm @ git+https://github.com/vivarium-collective/viva-cpm.git@main",
+    "vivarium-tyssue @ git+https://github.com/vivarium-collective/vivarium-tyssue.git@master",
+]
 
 [build-system]
 requires = ["hatchling"]

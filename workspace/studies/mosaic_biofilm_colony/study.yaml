@@ -1,0 +1,59 @@
+schema_version: 4
+name: mosaic_biofilm_colony
+created: '2026-10-25'
+status: planned
+execution_status: planned
+phase: Design
+runtime:
+  default_emitter: xarray
+readouts:
+- name: cell_count
+  store_path: cell_count
+  description: "Colony size — number of cells in the pymunk biofilm"
+  units: cells
+  status: available
+visualizations:
+- name: biofilm_growth
+  address: local:BiofilmColonyGrowth
+  config:
+    inputs_map:
+      cell_count: cell_count
+      time: global_time
+baseline:
+- name: mosaic_biofilm_colony
+  composite: mosaic_compose.composites.colony.mosaic_biofilm_colony
+  params: {}
+variants: []
+runs:
+- name: mosaic_compose.composites.colony.mosaic_biofilm_colony__1792937063__033dc6
+  status: completed
+  timestamp: 1792937070.349189
+  emitter:
+    kind: xarray
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_biofilm_colony/runs.mosaic_compose.composites.colony.mosaic_biofilm_colony__1792937063__033dc6.zarr
+  env_id: 4ab4a6491b7789dd
+  generations: 1
+  n_readouts: 1
+  params: '{}'
+  computed_outcomes: {}
+  provenance:
+    params:
+      n_steps:
+        value: 10800
+        source: resolved
+    params_captured_at: '2026-10-25'
+    params_source: dashboard-runner
+simulation_set:
+- name: mosaic_biofilm_colony-baseline
+  kind: single
+  base_model: mosaic_compose.composites.colony.mosaic_biofilm_colony
+  is_baseline: true
+  status: ran
+  metrics:
+  - cell_count
+pipeline_gate:
+  gate_evaluator:
+    result: not_started
+    blocked_by: []
+    evaluated_by: code
+    diverges_from_authored: false

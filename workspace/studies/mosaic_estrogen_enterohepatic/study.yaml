@@ -1,0 +1,73 @@
+schema_version: 4
+name: mosaic_estrogen_enterohepatic
+created: '2026-10-24'
+status: planned
+execution_status: planned
+phase: Design
+runtime:
+  default_emitter: xarray
+readouts:
+- name: e_blood
+  store_path: stores.species.E_blood
+  description: Systemic free estrogen (the clinically relevant exposure)
+  units: relative concentration
+  status: available
+- name: eg_gut
+  store_path: stores.species.EG_gut
+  description: Conjugated estrogen-glucuronide delivered to the gut via bile
+  units: relative concentration
+  status: available
+- name: e_gut
+  store_path: stores.species.E_gut
+  description: Free estrogen in the gut lumen after microbial deconjugation
+  units: relative concentration
+  status: available
+visualizations:
+- name: estrogen_enterohepatic
+  address: local:EstrogenEnterohepatic
+  config:
+    inputs_map:
+      e_blood: stores.species.E_blood
+      eg_gut: stores.species.EG_gut
+      e_gut: stores.species.E_gut
+      time: global_time
+baseline:
+- name: mosaic_estrogen_enterohepatic
+  composite: mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic
+  params: {}
+variants: []
+runs:
+- name: mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic__1792936064__752d70
+  status: completed
+  timestamp: 1792936068.815781
+  emitter:
+    kind: xarray
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_estrogen_enterohepatic/runs.mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic__1792936064__752d70.zarr
+  env_id: 4ab4a6491b7789dd
+  generations: 1
+  n_readouts: 3
+  params: '{}'
+  computed_outcomes: {}
+  provenance:
+    params:
+      n_steps:
+        value: 120
+        source: resolved
+    params_captured_at: '2026-10-25'
+    params_source: dashboard-runner
+simulation_set:
+- name: mosaic_estrogen_enterohepatic-baseline
+  kind: single
+  base_model: mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic
+  is_baseline: true
+  status: ran
+  metrics:
+  - e_blood
+  - eg_gut
+  - e_gut
+pipeline_gate:
+  gate_evaluator:
+    result: not_started
+    blocked_by: []
+    evaluated_by: code
+    diverges_from_authored: false

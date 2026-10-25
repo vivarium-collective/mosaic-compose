@@ -11,33 +11,37 @@ pytest.importorskip("viva_cobra", reason="viva-cobra (COBRApy stack) not install
 pytest.importorskip("cobra", reason="cobra not installed")
 
 
-def _run(gen, duration=1.0):
+def _run_final_state(gen, duration=1.0):
+    """Build + run a dFBA composite and return its final state.
+
+    The composites no longer carry a standalone emitter node (``_emit.strip_emitter``
+    removes the library builder's RAM emitter so the workbench injects its
+    configured sink — xarray — instead). So we assert on the final state directly
+    rather than reading an emitter history; the composite's own ``biomass`` /
+    ``substrates`` stores hold the outcome.
+    """
     from process_bigraph import Composite
-    from process_bigraph.emitter import gather_emitter_results
 
     from mosaic_compose.core import build_core
 
     comp = Composite(gen(), core=build_core())
     comp.run(duration)
-    return gather_emitter_results(comp)[("emitter",)]
+    return comp.state
 
 
 def test_ecoli_core_dfba_grows_and_consumes_glucose():
     from mosaic_compose.composites.dfba import mosaic_dfba_ecoli_core
 
-    history = _run(mosaic_dfba_ecoli_core, duration=1.5)
-    assert history
-    first, last = history[0], history[-1]
-    assert last["biomass"] > first["biomass"]
-    assert last["substrates"]["glucose"] < 11.1
+    state = _run_final_state(mosaic_dfba_ecoli_core, duration=1.5)
+    assert state["biomass"] > 0.01  # grew from the 0.01 seed
+    assert state["substrates"]["glucose"] < 11.1  # glucose consumed
 
 
 def test_lactobacillus_dfba_builds_and_grows():
     from mosaic_compose.composites.dfba import mosaic_dfba_lactobacillus
 
-    history = _run(mosaic_dfba_lactobacillus, duration=1.0)
-    assert history
-    assert history[-1]["biomass"] >= history[0]["biomass"]
+    state = _run_final_state(mosaic_dfba_lactobacillus, duration=1.0)
+    assert state["biomass"] >= 0.01
 
 
 def test_importing_the_workspace_registers_the_composites():
