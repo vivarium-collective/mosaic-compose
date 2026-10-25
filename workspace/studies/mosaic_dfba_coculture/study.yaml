@@ -42,13 +42,13 @@ baseline:
   params: {}
 variants: []
 runs:
-- name: mosaic_compose.composites.coculture.mosaic_dfba_coculture__1792900055__3ae7af
+- name: mosaic_compose.composites.coculture.mosaic_dfba_coculture__1792936072__46da15
   status: completed
-  timestamp: 1792900130.754067
+  timestamp: 1792936088.352125
   emitter:
     kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_dfba_coculture/runs.mosaic_compose.composites.coculture.mosaic_dfba_coculture__1792900055__3ae7af.zarr
-  env_id: e6fb84f4a884e2db
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_dfba_coculture/runs.mosaic_compose.composites.coculture.mosaic_dfba_coculture__1792936072__46da15.zarr
+  env_id: 4ab4a6491b7789dd
   generations: 1
   n_readouts: 4
   params: '{}'
@@ -56,9 +56,9 @@ runs:
   provenance:
     params:
       n_steps:
-        value: 180
+        value: 50
         source: resolved
-    params_captured_at: '2026-10-24'
+    params_captured_at: '2026-10-25'
     params_source: dashboard-runner
 simulation_set:
 - name: mosaic_dfba_coculture-baseline

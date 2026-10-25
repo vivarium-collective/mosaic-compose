@@ -37,13 +37,13 @@ baseline:
   params: {}
 variants: []
 runs:
-- name: mosaic_compose.composites.community.mosaic_glv_vaginal__1792881377__96552e
+- name: mosaic_compose.composites.community.mosaic_glv_vaginal__1792936059__7c4101
   status: completed
-  timestamp: 1792881381.737684
+  timestamp: 1792936063.6650949
   emitter:
     kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_glv_vaginal/runs.mosaic_compose.composites.community.mosaic_glv_vaginal__1792881377__96552e.zarr
-  env_id: 871d47c1f3b0ef02
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_glv_vaginal/runs.mosaic_compose.composites.community.mosaic_glv_vaginal__1792936059__7c4101.zarr
+  env_id: 4ab4a6491b7789dd
   generations: 1
   n_readouts: 2
   params: '{}'
@@ -53,7 +53,7 @@ runs:
       n_steps:
         value: 120
         source: resolved
-    params_captured_at: '2026-10-24'
+    params_captured_at: '2026-10-25'
     params_source: dashboard-runner
 simulation_set:
 - name: mosaic_glv_vaginal-baseline

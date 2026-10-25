@@ -37,13 +37,13 @@ baseline:
   params: {}
 variants: []
 runs:
-- name: mosaic_compose.composites.dfba.mosaic_dfba_lactobacillus__1792881398__a8e7fd
+- name: mosaic_compose.composites.dfba.mosaic_dfba_lactobacillus__1792936043__d35a0a
   status: completed
-  timestamp: 1792881413.068929
+  timestamp: 1792936057.829952
   emitter:
     kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_dfba_lactobacillus/runs.mosaic_compose.composites.dfba.mosaic_dfba_lactobacillus__1792881398__a8e7fd.zarr
-  env_id: 871d47c1f3b0ef02
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_dfba_lactobacillus/runs.mosaic_compose.composites.dfba.mosaic_dfba_lactobacillus__1792936043__d35a0a.zarr
+  env_id: 4ab4a6491b7789dd
   generations: 1
   n_readouts: 3
   params: '{}'
@@ -53,7 +53,7 @@ runs:
       n_steps:
         value: 60
         source: resolved
-    params_captured_at: '2026-10-24'
+    params_captured_at: '2026-10-25'
     params_source: dashboard-runner
 simulation_set:
 - name: mosaic_dfba_lactobacillus-baseline

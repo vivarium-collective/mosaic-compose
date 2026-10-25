@@ -25,13 +25,13 @@ baseline:
   params: {}
 variants: []
 runs:
-- name: mosaic_compose.composites.colony.mosaic_biofilm_colony__1792903074__f58514
+- name: mosaic_compose.composites.colony.mosaic_biofilm_colony__1792937063__033dc6
   status: completed
-  timestamp: 1792903076.379812
+  timestamp: 1792937070.349189
   emitter:
     kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_biofilm_colony/runs.mosaic_compose.composites.colony.mosaic_biofilm_colony__1792903074__f58514.zarr
-  env_id: 3a24278039fcaab9
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_biofilm_colony/runs.mosaic_compose.composites.colony.mosaic_biofilm_colony__1792937063__033dc6.zarr
+  env_id: 4ab4a6491b7789dd
   generations: 1
   n_readouts: 1
   params: '{}'
@@ -39,7 +39,7 @@ runs:
   provenance:
     params:
       n_steps:
-        value: 160
+        value: 10800
         source: resolved
     params_captured_at: '2026-10-25'
     params_source: dashboard-runner

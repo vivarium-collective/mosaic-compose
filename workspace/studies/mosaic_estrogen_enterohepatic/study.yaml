@@ -37,13 +37,13 @@ baseline:
   params: {}
 variants: []
 runs:
-- name: mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic__1792881393__44175d
+- name: mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic__1792936064__752d70
   status: completed
-  timestamp: 1792881397.993288
+  timestamp: 1792936068.815781
   emitter:
     kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_estrogen_enterohepatic/runs.mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic__1792881393__44175d.zarr
-  env_id: 871d47c1f3b0ef02
+    store: /Users/eranagmon/code/mosaic-compose--foundations/workspace/studies/mosaic_estrogen_enterohepatic/runs.mosaic_compose.composites.hormone.mosaic_estrogen_enterohepatic__1792936064__752d70.zarr
+  env_id: 4ab4a6491b7789dd
   generations: 1
   n_readouts: 3
   params: '{}'
@@ -53,7 +53,7 @@ runs:
       n_steps:
         value: 120
         source: resolved
-    params_captured_at: '2026-10-24'
+    params_captured_at: '2026-10-25'
     params_source: dashboard-runner
 simulation_set:
 - name: mosaic_estrogen_enterohepatic-baseline
