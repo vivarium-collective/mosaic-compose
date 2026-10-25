@@ -135,6 +135,11 @@ studies:
   # (estrobolome beta-glucuronidase) knob tunes systemic exposure (inline
   # Antimony via viva-tellurium).
 - mosaic_estrogen_enterohepatic
+  # Process-bigraph COMPOSITION — two dynamic-FBA organisms (E. coli core +
+  # Lactobacillus) coupled through one shared substrate pool; they compete for
+  # glucose and the fast glucose specialist wins. Demonstrates coupling two
+  # standalone models through shared topology.
+- mosaic_dfba_coculture
 
 expert_docs: []
 

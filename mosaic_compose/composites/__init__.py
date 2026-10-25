@@ -5,3 +5,6 @@ from __future__ import annotations
 from mosaic_compose.composites import dfba as _dfba  # noqa: F401
 from mosaic_compose.composites import community as _community  # noqa: F401
 from mosaic_compose.composites import hormone as _hormone  # noqa: F401
+
+# Two-organism dFBA co-culture (composition demo).
+from . import coculture  # noqa: F401,E402
