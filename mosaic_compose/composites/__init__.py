@@ -8,3 +8,6 @@ from mosaic_compose.composites import hormone as _hormone  # noqa: F401
 
 # Two-organism dFBA co-culture (composition demo).
 from . import coculture  # noqa: F401,E402
+
+# Spatial agent-based biofilm colony (ABM arm).
+from . import colony  # noqa: F401,E402

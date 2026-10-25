@@ -140,6 +140,10 @@ studies:
   # glucose and the fast glucose specialist wins. Demonstrates coupling two
   # standalone models through shared topology.
 - mosaic_dfba_coculture
+  # Spatial AGENT-BASED model — a pymunk biofilm colony (viva-munk): rod cells
+  # grow, divide, and physically pack a 2-D chamber. The spatial/ABM model type;
+  # colony size (cell count) is the emitted growth trajectory.
+- mosaic_biofilm_colony
 
 expert_docs: []
 
