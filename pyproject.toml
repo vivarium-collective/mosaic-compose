@@ -31,10 +31,15 @@ dev = ["pytest>=7.4"]
 foundations = [
     # ODE / kinetic — Stein-2013 gLV community + estrogen enterohepatic PK (Antimony/SBML).
     "viva-tellurium @ git+https://github.com/vivarium-collective/viva-tellurium.git@main",
-    # Spatial / ABM — pymunk particle colony, Cellular Potts gut crypt, tyssue vertex sheet.
+    # Spatial / ABM — pymunk particle biofilm colony.
     "viva-munk @ git+https://github.com/vivarium-collective/viva-munk.git@main",
-    "viva-cpm @ git+https://github.com/vivarium-collective/viva-cpm.git@main",
-    "vivarium-tyssue @ git+https://github.com/vivarium-collective/vivarium-tyssue.git@master",
+    # NOTE: viva-cpm (Cellular-Potts crypt) and vivarium-tyssue (vertex sheet) are
+    # intentionally NOT in this extra. Both are blocked prototypes, not used by any
+    # live study, and each breaks dependency resolution: viva-cpm requires Python
+    # >=3.12 (workspace supports >=3.11), and vivarium-tyssue pins the old
+    # `vivarium-dashboard` URL which conflicts with this workspace's
+    # `vivarium-workbench`. Re-add them (with a Python marker / URL override) when
+    # those arms are unblocked upstream — see composites/crypt.py.
 ]
 
 [build-system]
