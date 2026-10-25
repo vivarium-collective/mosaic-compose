@@ -21,6 +21,7 @@ from process_bigraph.composite_generator import composite_generator
 from viva_munk.composites import _register_pymunk_types, _register_processes
 from viva_munk.processes.grow_divide import add_adder_grow_divide_to_agents
 from viva_munk.processes.multibody import make_initial_state
+from viva_munk.visualizations import make_multibody_viz_step, make_viz_stores
 
 
 class CountCells(Step):
@@ -66,7 +67,7 @@ _INTERVAL = 6.0
         "/ spatial model type. Emits colony size (cell count) per tick; the "
         "MultibodyViz step renders the spatial colony."
     ),
-    default_n_steps=160,
+    default_n_steps=60,
     core_extensions=[_register_colony],
 )
 def mosaic_biofilm_colony(core=None):
@@ -76,9 +77,13 @@ def mosaic_biofilm_colony(core=None):
         microbe_mass_density=0.02,
     )
     # High adder growth rate so the colony visibly divides within a short run.
+    # Zero the stochastic CVs so the colony grows deterministically (exponential
+    # growth otherwise amplifies per-cell rate noise into huge run-to-run
+    # variance in the final count).
     add_adder_grow_divide_to_agents(
         state, agents_key="cells",
-        config={"agents_key": "cells", "alpha_mean_per_h": 40.0},
+        config={"agents_key": "cells", "alpha_mean_per_h": 150.0,
+                "alpha_cv": 0.0, "delta_cv": 0.0, "division_noise_cv": 0.0},
     )
     # pymunk physics integrator: resolve cell-cell overlap each tick.
     state["multibody"] = {
@@ -94,4 +99,12 @@ def mosaic_biofilm_colony(core=None):
         "inputs": {"cells": ["cells"]},
         "outputs": {"cell_count": ["cell_count"]},
     }
+    # Spatial SNAPSHOT: viva-munk's MultibodyVizStep renders the live colony
+    # (cell positions/orientations) to HTML directly from the state tree — no
+    # emitter involved, so the spatial `cells` map is rendered in full. The run's
+    # _render_viz (render_results) collects it into viz.json → the study's native
+    # gallery (which now also accepts the step's {'html': ...} payload shape).
+    state["stores"] = make_viz_stores()
+    state["colony_snapshot"] = make_multibody_viz_step(
+        title="Biofilm colony", env_width=_ENV, env_height=_ENV, has_particles=False)
     return {"state": state}
