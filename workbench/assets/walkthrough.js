@@ -2294,12 +2294,24 @@
       window.open(_build3dSrc(m), '_blank', 'noopener');
     } else if (t.kind === 'embed-simularium') {
       window.open(_buildSimulariumSrc(m), '_blank', 'noopener');
-    } else if (m.href) {
-      window.open(m.href, '_blank', 'noopener');
     } else {
-      // Contributed launcher viewers are keyed by full uid (package::id) at the
-      // launch endpoint; t.id is the bare id, so prefer t.uid.
-      _launchViewer(t.uid || t.id, m.study || m.ref || '');  // resolves via endpoint / snapshot note
+      // Open the selected item's static export. A workspace-root-absolute href
+      // (/studies/…) MUST carry the hosting base path in the published snapshot,
+      // or it 404s to the domain root; an external (http/protocol-relative) href
+      // opens as-is. Mirrors the picker's _openHref + sim-table.toolsCell. Fall
+      // back to any target's static href before the live launch endpoint so a
+      // launcher whose selected item lacks an href (but whose pack IS baked)
+      // opens in the read-only snapshot instead of hitting the "local only" note.
+      var _bp = window.__BASE_PATH__ || (window.__DASH_CONFIG__ && window.__DASH_CONFIG__.basePath) || '';
+      var _rawHref = m.href || (((t.targets || []).filter(function (x) { return x && x.href; })[0]) || {}).href;
+      if (_rawHref) {
+        window.open(/^https?:|^\/\//.test(_rawHref) ? _rawHref : (_bp + _rawHref), '_blank', 'noopener');
+      } else {
+        // Live-only launcher (no baked export): keyed by full uid (package::id)
+        // at the launch endpoint; t.id is the bare id, so prefer t.uid. The
+        // snapshot shows a "launch locally" note rather than calling a 404.
+        _launchViewer(t.uid || t.id, m.study || m.ref || '');
+      }
     }
   }
   window._openTool = _openTool;
@@ -11217,7 +11229,10 @@
       tabs.push({ id:'verdict', label:'Verdict', badge: vs ? vs.toUpperCase() : '',
         html: '<div class="inv-brief-verdict-tab inv-vs-' + vsClass + '">' +
           '<span class="inv-vs-pill">' + _esc(vs.toUpperCase()) + '</span>' +
-          '<div class="inv-brief-verdict-text">' + _invInline(verdict) + '</div></div>' });
+          '<div class="inv-brief-verdict-text">' + _invInline(verdict) + '</div></div>' +
+          // Claims (RFC-0005 synthesis layer): each claim, its verdict, and what
+          // supports/challenges it — filled async by argument-graph.js.
+          '<div id="inv-verdict-claims-mount" class="inv-claims-mount"></div>' });
 
     // 3. Background — the lead intro, the driving Question + Hypothesis, and the
     // structured argument (Hypothesis & evidence folded in here per the owner).
@@ -11234,6 +11249,14 @@
         '<div class="inv-brief-frameworks-label">Hypothesis &amp; evidence</div>' + _evBody + '</div>');
     if (bgParts.length)
       tabs.push({ id:'background', label:'Background', html: bgParts.join('') });
+
+    // Narrative — the ordered scientific reading (RFC-0005): the investigation's
+    // claims arranged by explanatory dependence, with the audit gaps marked
+    // inline. A derived document, next to Background. Filled async by
+    // argument-graph.js; shows nothing if the derivation layer is unavailable.
+    tabs.push({ id:'narrative', label:'Narrative', html:
+      '<div id="inv-narrative-mount" class="inv-narrative-mount">' +
+      '<p class="muted" style="padding:16px">Loading narrative…</p></div>' });
 
     // 4. Biology — the plain-English mechanism narrative (biological_story).
     if (bio)
@@ -11265,7 +11288,10 @@
       // evaluated board as no progress. The per-outcome breakdown is in the board tally.
       var _TERMINAL = { passed: 1, met: 1, qualified: 1, refuted: 1 };
       var _evaluated = _pb.filter(function (g) { return _TERMINAL[g.status]; }).length;
-      tabs.push({ id:'plan', label:'Plan progress', html:_planHtml,
+      // The formalized synthesis spine (canonical gate verdicts rolled up from
+      // member claims) replaces this content when argument-graph.js loads the
+      // overlay; _planHtml is the sync fallback if the derivation layer is absent.
+      tabs.push({ id:'plan', label:'Plan progress', html:'<div id="inv-plan-mount">' + _planHtml + '</div>',
         badge: _pb.length ? (_evaluated + '/' + _pb.length + ' evaluated') : '' });
     }
 
@@ -11273,7 +11299,10 @@
     var _decHtml = _invDecisionTabHtml(d);
     if (_decHtml) {
       var _nDec = (((d.executive || {}).decisions_needed) || []).length;
-      tabs.push({ id: 'decisions', label: 'Decisions', html: _decHtml,
+      // The authored decisions keep their interactive Resolve cockpit; the
+      // derived open items (audit gaps, open-question claims, divergences) are
+      // filled below by argument-graph.js from the overlay.
+      tabs.push({ id: 'decisions', label: 'Decisions', html: _decHtml + '<div id="inv-decisions-mount"></div>',
         badge: _nDec ? (_nDec + ' needed') : 'all clear', attention: _nDec > 0 });
     }
 
