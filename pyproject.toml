@@ -30,7 +30,11 @@ dev = ["pytest>=7.4"]
 # renders them install `.[foundations]`.
 foundations = [
     # ODE / kinetic — Stein-2013 gLV community + estrogen enterohepatic PK (Antimony/SBML).
-    "viva-tellurium @ git+https://github.com/vivarium-collective/viva-tellurium.git@main",
+    # Python-gated to >=3.12: viva-tellurium depends on libroadrunner>=2.11, which
+    # ships no 3.11 wheels (cp312+ only). The workspace still supports 3.11 (see the
+    # note below), so the marker excludes the tellurium arm from a 3.11 resolution
+    # (keeps `uv sync`/CI green on 3.11) while the publish job (3.12) installs it.
+    "viva-tellurium @ git+https://github.com/vivarium-collective/viva-tellurium.git@main ; python_version >= '3.12'",
     # Spatial / ABM — pymunk particle biofilm colony.
     "viva-munk @ git+https://github.com/vivarium-collective/viva-munk.git@main",
     # NOTE: viva-cpm (Cellular-Potts crypt) and vivarium-tyssue (vertex sheet) are
