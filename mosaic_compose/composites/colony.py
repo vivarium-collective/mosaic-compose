@@ -16,6 +16,7 @@ the live colony spatially; the run surfaces it to the study's native gallery.
 """
 from __future__ import annotations
 
+from bigraph_schema.contract import ProcessContract
 from process_bigraph.composite import Step
 from process_bigraph.composite_generator import composite_generator
 
@@ -30,6 +31,36 @@ class CountCells(Step):
     the XArrayEmitter; this projects it to a scalar. ``overwrite[integer]`` so the
     store holds the current count rather than accumulating it across ticks.
     """
+
+    description = (
+        "Count Cells — population readout: N = number of agents in the colony "
+        "store, written each tick as the current colony size."
+    )
+    contract = ProcessContract(
+        summary=(
+            "Counts the current number of cells/agents in the colony store and "
+            "writes the population size as a scalar each tick."
+        ),
+        symbols={"N": "number of cells (agents) currently in the colony store"},
+        math=[r"N = \lvert \{\text{agents}\} \rvert"],
+        inputs={
+            "cells": (
+                "Reads the colony store — a ``map[pymunk_agent]`` of the "
+                "rod-shaped cells currently alive in the chamber."
+            )
+        },
+        outputs={
+            "cell_count": (
+                "Writes the integer cell count N as ``overwrite[integer]`` — the "
+                "CURRENT colony size, not a running sum."
+            )
+        },
+        config={},
+        assumptions=[
+            "Counts top-level agent entries in the ``cells`` map; does not "
+            "distinguish cell state/phenotype.",
+        ],
+    )
 
     def inputs(self):
         return {"cells": "map[pymunk_agent]"}
