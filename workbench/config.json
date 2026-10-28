@@ -2,6 +2,6 @@
   "mode": "snapshot",
   "smsApiBase": "",
   "repo": "https://github.com/vivarium-collective/mosaic-compose",
-  "commit": "52461d167ebbfdbfca36346e126a18453ad44044",
+  "commit": "0224dd60feab276d244414a2555f7ee3e677d22b",
   "generated_from_ref": "main"
 }
