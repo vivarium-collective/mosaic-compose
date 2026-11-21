@@ -15,7 +15,7 @@ import importlib
 # dfba → viva-cobra; community/hormone → viva-tellurium; coculture → viva-cobra;
 # colony → viva-munk. Import each independently so one missing package doesn't
 # hide the others.
-for _mod in ("dfba", "community", "hormone", "coculture", "colony"):
+for _mod in ("dfba", "community", "hormone", "coculture", "colony", "crossfeeding", "onecarbon"):
     try:
         importlib.import_module(f"mosaic_compose.composites.{_mod}")
     except Exception:  # noqa: BLE001 — optional simulator package absent
