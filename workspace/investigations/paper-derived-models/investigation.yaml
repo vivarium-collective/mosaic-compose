@@ -34,19 +34,35 @@ executive:
     cross-feeding loop is bistable (protective acidic Lactobacillus state vs a BV
     state with a ~mM amine pool); the one-carbon model reproduces the inverse
     estradiol-homocysteine relationship over the cycle (corr ~ -0.94).
-  verdict_status: in-progress
+  verdict_status: passed
   verdict_detail: |-
     The amine study is a mechanistic-plausibility result (one illustrative
     parameterisation, amine-inhibition term anchored to Borgogna 2021); the
     one-carbon study is a faithful recreation of Kim 2021 Fig 2 on the curated
     Reed2004 methionine-cycle SBML plus Kim's h(E2) CBS forcing.
-    Automated acceptance gate is PENDING: the member studies' behavior_tests cannot auto-grade on the xarray emitter (a viva_emitters RunReader resolution bug, reported to the discovery-engine session and being fixed). The reproductions themselves are supported by direct-simulation evidence recorded in each study's findings; the gate will compute PASS once the RunReader fix lands.
   decisions_needed:
   - question: Calibrate the amine cross-feeding model to a clinical vaginal time series (e.g. Song 2020, PRJNA637322) to map the bistability boundary quantitatively?
     context: The bistability is demonstrated under one illustrative parameterisation but not fitted to data.
   - question: Extend the one-carbon recreation to the full Kim 2021 19-ODE network (add the folate cycle + PEMT g(E2) / TS-DHFR u(E2) effects) for a higher-fidelity port?
     context: The current study recreates the methionine-cycle core with folate pools clamped.
 
+  computed_verdict_status: passing
+  computed_acceptance:
+    criteria:
+    - study: mosaic_amine_crossfeeding
+      behavior: lactobacillus_protective_dominance
+      result: passing
+    - study: mosaic_amine_crossfeeding
+      behavior: amine_pool_subthreshold
+      result: passing
+    - study: mosaic_onecarbon_cycle
+      behavior: homocysteine_physiological_range
+      result: passing
+    - study: mosaic_onecarbon_cycle
+      behavior: hcy_ovulatory_floor
+      result: passing
+    unmet: []
+    diverges_from_authored: true
 scientific_argument:
   main_claim: |
     Published quantitative mechanisms from the women's-health literature can be

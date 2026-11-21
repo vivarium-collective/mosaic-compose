@@ -12,7 +12,7 @@ executive:
 scientific_argument: Two BV papers quantify opposite arms of a biogenic-amine loop. Borgogna et al. 2021 (doi:10.1128/aem.03068-20) show Gardnerella-associated amines inhibit Lactobacillus growth (putrescine 3,179 µM → +22-33% doubling time) and suppress lactic-acid production; Puebla-Barragan et al. 2021 (doi:10.3390/ijms222212279) show Lactobacillus degrades those amines and grows faster at low pH. Closing the loop — amines ⊣ Lactobacillus growth & lactate → pH rises → favours Gardnerella, vs Lactobacillus → lactate → low pH & faster amine degradation → clears amines — predicts bistability, which this ODE reproduces.
 title: BV biogenic-amine cross-feeding
 claim: A biogenic-amine cross-feeding loop (Gardnerella amines inhibit Lactobacillus and suppress lactate; Lactobacillus degrades amines and acidifies) makes the vaginal community bistable — a protective acidic Lactobacillus state versus a Gardnerella-dominant BV state with a ~mM amine pool.
-confidence: Investigating
+confidence: Accepted
 preregistered:
   priors:
   - name: lactobacillus_protective_dominance
@@ -58,12 +58,21 @@ findings:
     from_run: baseline
     from_test: lactobacillus_protective_dominance
     observed: 'protective basin: Lactobacillus → ~0.94, Gardnerella → ~0.09, amines cleared to ~0.1 mM, pH → 4.3; dysbiotic start instead locks into G-dominant, ~5.4 mM amines, pH 5.8'
+    units: relative abundance
+    divergence_factor: 0.0
   expected:
     summary: Borgogna 2021 + Puebla-Barragan 2021 imply a two-way amine loop that should admit both a protective and a BV steady state.
+    range:
+    - 0.6
+    - 1.0
+    cites:
+    - borgogna2021biogenicamines
+    - pueblabarragan2021malodour
   explanation: Amines inhibit Lactobacillus growth and suppress lactate (raising pH, favouring Gardnerella); Lactobacillus degrades amines and acidifies (lowering pH, favouring itself). The opposing feedbacks create two basins of attraction.
   provenance:
     run_ids:
     - mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795275245__f4b22d
+    model_version: mv:a06eaf3be2e67984
 - id: amine-clearance-mechanism
   kind: biological
   status: confirms
@@ -72,20 +81,27 @@ findings:
     from_run: baseline
     from_test: amine_pool_subthreshold
     observed: amine pool falls from 2000 µM toward ~0.1 mM as Lactobacillus takes over; lactate proxy rises to ~1.6 (pH ~4.3)
+    divergence_factor: 0.0
   expected:
     summary: Puebla-Barragan 2021 — Lactobacillus crispatus strains degrade putrescine/cadaverine and grow faster at low pH.
+    range:
+    - 0.0
+    - 2000.0
+    cites:
+    - borgogna2021biogenicamines
   provenance:
     run_ids:
     - mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795275245__f4b22d
+    model_version: mv:a06eaf3be2e67984
 report:
   title: BV biogenic-amine cross-feeding
   verdict: supported
-  confidence: low
+  confidence: medium
   evidence_quality: illustrative-mechanistic
   objective: Test whether a biogenic-amine cross-feeding loop coupling the Lactobacillus–Gardnerella community to the amine pool and pH reproduces bistable healthy/BV states.
   conclusion: The ODE is bistable as the amine data imply. The amine growth-inhibition half-constant is anchored to Borgogna 2021's measured effect size; the community/pH scaffold is illustrative (not calibrated to a clinical dataset), so the verdict is a mechanistic-plausibility result, not a quantitative fit.
   main_insight: Biogenic amines are not just a BV marker — as a cross-fed metabolite coupled to pH they are a bistability-generating mechanism, which reframes them as a therapeutic target (an amine-degrading probiotic shifts the basin boundary).
-  caveat: "Single illustrative parameterisation; the bistability is demonstrated, not mapped as a calibrated phase boundary. No clinical time-series fit yet (candidate data — Song 2020 PRJNA637322). NOTE: the pre-registered behavior_tests are declared acceptance criteria but cannot auto-grade yet on this workspace's xarray emitter (a viva_emitters RunReader bug, reported + being fixed), so the automated gate reads 'pending/blocked', not failed. The band values are verified by direct simulation (recorded in the findings) and will grade PASS once the RunReader fix lands."
+  caveat: "Single illustrative parameterisation; the bistability is demonstrated, not mapped as a calibrated phase boundary. No clinical time-series fit yet (candidate data — Song 2020 PRJNA637322)."
   key_metrics:
   - {name: Lactobacillus (protective, mean): null, value: 0.74, units: relative abundance}
   - {name: amine pool (mean), value: 828, units: µM}
@@ -128,70 +144,107 @@ baseline:
   params: {}
 variants: []
 runs:
-- name: mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795274174__8eff4b
+- name: mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795277190__fff892
   status: completed
-  timestamp: 1795274194.2202082
+  timestamp: 1795277218.980008
   emitter:
     kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--paper-models/workspace/studies/mosaic_amine_crossfeeding/runs.mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795274174__8eff4b.zarr
-  env_id: 0987f0a483bb1068
+    store: /Users/eranagmon/code/mosaic-compose--regrade/workspace/studies/mosaic_amine_crossfeeding/runs.mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795277190__fff892.zarr
+  env_id: a9662e2db34c5b08
   variant: mosaic_amine_crossfeeding
   generations: 1
+  sim_minutes: 6
   n_readouts: 4
   params: '{}'
   computed_outcomes:
     lactobacillus_protective_dominance:
-      evaluated_by: agent
-      reason: observable 'stores.species.Lactobacillus' not resolvable
+      result: PASS
+      measured_value: 0.964707
+      evaluated_by: code
+      operator: generation_average/in_range
+      detail: 0.9647 in [0.6, 1.0]
+      axis:
+        id: lactobacillus_protective_dominance
+        label: Over the run, Lactobacillus holds the protective-majority share of the community (mean relative abundance in [0.6, 1.0]).
+        verdict: within_tol
+        value: 0.964707
+        meter: 0.5176465
+        detail:
+        expected:
+          kind: band
+          value:
+          low: 0.6
+          high: 1.0
+          op: ~=
+          tol: 0.05
+          statement:
+          units:
+        margin: 0.03529300000000002
+        severity: hard
+        units:
+        knob:
+        citation: borgogna2021biogenicamines; pueblabarragan2021malodour
       reconcile: no_authored
     amine_pool_subthreshold:
-      evaluated_by: agent
-      reason: observable 'stores.species.Amines' not resolvable
+      result: PASS
+      measured_value: 106.305
+      evaluated_by: code
+      operator: generation_average/in_range
+      detail: 106.3 in [0.0, 2000.0]
+      axis:
+        id: amine_pool_subthreshold
+        label: The biogenic-amine pool stays sub-mM on average (mean in [0, 2000] µM), i.e. not locked into the ~6 mM BV state.
+        verdict: within_tol
+        value: 106.305
+        meter: 0.52657625
+        detail:
+        expected:
+          kind: band
+          value:
+          low: 0.0
+          high: 2000.0
+          op: ~=
+          tol: 0.05
+          statement:
+          units:
+        margin: 106.305
+        severity: hard
+        units:
+        knob:
+        citation: borgogna2021biogenicamines
       reconcile: no_authored
     community_acidification:
-      evaluated_by: agent
-      reason: observable 'stores.species.Lactate' not resolvable
+      result: PASS
+      measured_value: 1.67429
+      evaluated_by: code
+      operator: generation_average/in_range
+      detail: 1.674 in [0.8, 2.0]
+      axis:
+        id: community_acidification
+        label: Lactobacillus-driven lactate accumulates enough to acidify the community (mean lactate proxy in [0.8, 2.0] → pH < ~4.7).
+        verdict: within_tol
+        value: 1.67429
+        meter: 0.5814275
+        detail:
+        expected:
+          kind: band
+          value:
+          low: 0.8
+          high: 2.0
+          op: ~=
+          tol: 0.05
+          statement:
+          units:
+        margin: 0.32570999999999994
+        severity: hard
+        units:
+        knob:
+        citation: pueblabarragan2021malodour
       reconcile: no_authored
     _grader:
       version: 3-freshness
-      graded_at: '2026-11-21T15:34:32.852677+00:00'
-      inputs_hash: b60ce7ceda519bef
-      store: resolved
-  provenance:
-    params:
-      n_steps:
-        value: 350
-        source: resolved
-    params_captured_at: '2026-11-21'
-    params_source: dashboard-runner
-- name: mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795275245__f4b22d
-  status: completed
-  timestamp: 1795275264.3822238
-  emitter:
-    kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--harden/workspace/studies/mosaic_amine_crossfeeding/runs.mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795275245__f4b22d.zarr
-  env_id: c5657fae74e9b91c
-  variant: mosaic_amine_crossfeeding
-  generations: 1
-  n_readouts: 4
-  params: '{}'
-  computed_outcomes:
-    lactobacillus_protective_dominance:
-      evaluated_by: agent
-      reason: observable 'stores.species.Lactobacillus' not resolvable
-      reconcile: no_authored
-    amine_pool_subthreshold:
-      evaluated_by: agent
-      reason: observable 'stores.species.Amines' not resolvable
-      reconcile: no_authored
-    community_acidification:
-      evaluated_by: agent
-      reason: observable 'stores.species.Lactate' not resolvable
-      reconcile: no_authored
-    _grader:
-      version: 3-freshness
-      graded_at: '2026-11-21T15:34:33.305470+00:00'
-      inputs_hash: 84a61f60f0ef9bc3
+      graded_at: '2026-11-21T16:07:17.815886+00:00'
+      inputs_hash: bf33c9fad926fa62
       store: resolved
   provenance:
     params:
@@ -213,11 +266,8 @@ simulation_set:
   - lactate
 pipeline_gate:
   gate_evaluator:
-    result: blocked
-    blocked_by:
-    - lactobacillus_protective_dominance
-    - amine_pool_subthreshold
-    - community_acidification
+    result: passed
+    blocked_by: []
     evaluated_by: code
     diverges_from_authored: false
 simulation_status: ran

@@ -12,7 +12,7 @@ executive:
 scientific_argument: 'Kim, Nijhout & Reed 2021 (PLOS Comput Biol, doi:10.1371/journal.pcbi.1009708) extended the Reed/Nijhout one-carbon metabolism models with estradiol-dependent enzyme activation and showed that homocysteine tracks estradiol inversely over the menstrual cycle. The dominant mechanism is estradiol activation of cystathionine-β-synthase (CBS), the transsulfuration enzyme that removes homocysteine: h(E2) = 1 + (E2−0.09)/(0.67+(E2−0.09)). We reproduce this by standing Kim''s CBS forcing and a Fourier-fit menstrual E2(t) on top of the curated, retrievable Reed2004 methionine-cycle SBML (BioModels BIOMD0000000698).'
 title: Kim 2021 one-carbon cycle
 claim: Estradiol activation of CBS (transsulfuration) makes hepatic homocysteine vary inversely with estradiol over the menstrual cycle — lowest at the ovulatory E2 peak — reproducing Kim, Nijhout & Reed 2021 on the curated Reed2004 methionine-cycle model.
-confidence: Investigating
+confidence: Accepted
 preregistered:
   priors:
   - name: homocysteine_physiological_range
@@ -59,12 +59,19 @@ findings:
     from_test: homocysteine_physiological_range
     observed: 'corr(E2, Hcy) ≈ -0.94 over the settled cycle; Hcy ≈ 0.60 µM at the day-12 E2 peak vs ≈ 1.03 µM at menstruation (mean 0.72 µM)'
     units: µM
+    divergence_factor: 0.0
   expected:
     summary: Kim 2021 Fig 2 — homocysteine moves opposite to estradiol across the cycle (lowest near ovulation).
+    range:
+    - 0.5
+    - 1.1
+    cites:
+    - kim2021onecarbon
   explanation: Estradiol activates CBS via h(E2) = 1 + (E2-0.09)/(0.67+(E2-0.09)); higher CBS flux at the E2 peak consumes more homocysteine through transsulfuration, so Hcy falls as E2 rises.
   provenance:
     run_ids:
     - mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795275274__3b4a6e
+    model_version: mv:04c767307bb96b7b
 - id: cbs-transsulfuration-mechanism
   kind: biological
   status: confirms
@@ -75,18 +82,21 @@ findings:
     observed: with h(E2) on CBS only (no other estradiol targets), Hcy tracks E2 at corr -0.94; the SAM/SAH methylation ratio stays near-flat (methylation homeostasis, Kim 2021 Fig 3A)
   expected:
     summary: Kim 2021 identifies CBS as the dominant estradiol-sensitive node for the homocysteine response.
+    cites:
+    - kim2021onecarbon
   provenance:
     run_ids:
     - mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795275274__3b4a6e
+    model_version: mv:04c767307bb96b7b
 report:
   title: Kim 2021 one-carbon cycle
   verdict: supported
-  confidence: low
+  confidence: medium
   evidence_quality: faithful-recreation
   objective: Test whether estradiol activation of CBS over the menstrual cycle makes hepatic homocysteine vary inversely with estradiol, reproducing Kim, Nijhout & Reed 2021.
   conclusion: Yes — homocysteine tracks estradiol inversely (corr ≈ -0.94), lowest at the ovulatory E2 peak, built on the curated Reed2004 methionine-cycle SBML plus Kim's exact h(E2) CBS forcing. This is a faithful recreation of the paper's headline (Fig 2), not a de-novo fit.
   main_insight: The whole menstrual-cycle homocysteine swing follows from a single estradiol target (CBS); the methionine cycle's other fluxes re-balance to keep the SAM/SAH methylation ratio stable.
-  caveat: "Methionine-cycle core only (folate pools clamped); Kim's PEMT g(E2) and TS/DHFR u(E2) effects act on folate-cycle enzymes not represented here. E2(t) is a 5-harmonic Fourier fit (peak slightly damped, 1.02 vs 1.15 nM). NOTE: the pre-registered behavior_tests are declared acceptance criteria but cannot auto-grade yet on this workspace's xarray emitter (a viva_emitters RunReader bug, reported + being fixed), so the automated gate reads 'pending/blocked', not failed. The band values are verified by direct simulation (recorded in the findings) and will grade PASS once the RunReader fix lands."
+  caveat: "Methionine-cycle core only (folate pools clamped); Kim's PEMT g(E2) and TS/DHFR u(E2) effects act on folate-cycle enzymes not represented here. E2(t) is a 5-harmonic Fourier fit (peak slightly damped, 1.02 vs 1.15 nM)."
   key_metrics:
   - {name: corr(E2, Hcy): null, value: -0.94, units: dimensionless}
   - {name: Hcy at ovulatory peak, value: 0.60, units: µM}
@@ -128,70 +138,107 @@ baseline:
   params: {}
 variants: []
 runs:
-- name: mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795274215__73085b
+- name: mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795277310__20fb8a
   status: completed
-  timestamp: 1795274225.743555
+  timestamp: 1795277320.3190668
   emitter:
     kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--paper-models/workspace/studies/mosaic_onecarbon_cycle/runs.mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795274215__73085b.zarr
-  env_id: 0987f0a483bb1068
+    store: /Users/eranagmon/code/mosaic-compose--regrade/workspace/studies/mosaic_onecarbon_cycle/runs.mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795277310__20fb8a.zarr
+  env_id: a9662e2db34c5b08
   variant: mosaic_onecarbon_cycle
   generations: 1
+  sim_minutes: 11
   n_readouts: 4
   params: '{}'
   computed_outcomes:
     homocysteine_physiological_range:
-      evaluated_by: agent
-      reason: observable 'stores.species.Homocysteine' not resolvable
+      result: PASS
+      measured_value: 0.72144
+      evaluated_by: code
+      operator: generation_average/in_range
+      detail: 0.7214 in [0.5, 1.1]
+      axis:
+        id: homocysteine_physiological_range
+        label: Mean hepatic homocysteine over the 28-day cycle sits in the physiological [0.5, 1.1] µM band.
+        verdict: within_tol
+        value: 0.72144
+        meter: 0.6006545454545454
+        detail:
+        expected:
+          kind: band
+          value:
+          low: 0.5
+          high: 1.1
+          op: ~=
+          tol: 0.05
+          statement:
+          units:
+        margin: 0.22143999999999997
+        severity: hard
+        units:
+        knob:
+        citation: kim2021onecarbon
       reconcile: no_authored
     hcy_ovulatory_floor:
-      evaluated_by: agent
-      reason: observable 'stores.species.Homocysteine' not resolvable
+      result: PASS
+      measured_value: 0.604239
+      evaluated_by: code
+      operator: derived_scalar/min_ge
+      detail: min=0.6042 >= 0.5
+      axis:
+        id: hcy_ovulatory_floor
+        label: Homocysteine's cycle minimum (at the ovulatory E2 peak, strongest CBS activation) stays at or above 0.5 µM.
+        verdict: within_tol
+        value: 0.604239
+        meter: 0.604239
+        detail:
+        expected:
+          kind: value
+          value: 0.5
+          low:
+          high:
+          op: '>='
+          tol: 0.05
+          statement:
+          units:
+        margin: 0.10423899999999997
+        severity: hard
+        units:
+        knob:
+        citation: kim2021onecarbon
       reconcile: no_authored
     hcy_menstrual_ceiling:
-      evaluated_by: agent
-      reason: observable 'stores.species.Homocysteine' not resolvable
+      result: PASS
+      measured_value: 1.02703
+      evaluated_by: code
+      operator: derived_scalar/max_le
+      detail: max=1.027 <= 1.1
+      axis:
+        id: hcy_menstrual_ceiling
+        label: Homocysteine's cycle maximum (at menstruation, weakest CBS activation) stays at or below 1.1 µM.
+        verdict: within_tol
+        value: 1.02703
+        meter: 0.5331681818181818
+        detail:
+        expected:
+          kind: value
+          value: 1.1
+          low:
+          high:
+          op: <=
+          tol: 0.05
+          statement:
+          units:
+        margin: 0.07296999999999998
+        severity: hard
+        units:
+        knob:
+        citation: kim2021onecarbon
       reconcile: no_authored
     _grader:
       version: 3-freshness
-      graded_at: '2026-11-21T15:34:48.397119+00:00'
-      inputs_hash: 4722d5451c4e3df8
-      store: resolved
-  provenance:
-    params:
-      n_steps:
-        value: 672
-        source: resolved
-    params_captured_at: '2026-11-21'
-    params_source: dashboard-runner
-- name: mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795275274__3b4a6e
-  status: completed
-  timestamp: 1795275283.5868568
-  emitter:
-    kind: xarray
-    store: /Users/eranagmon/code/mosaic-compose--harden/workspace/studies/mosaic_onecarbon_cycle/runs.mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795275274__3b4a6e.zarr
-  env_id: c5657fae74e9b91c
-  variant: mosaic_onecarbon_cycle
-  generations: 1
-  n_readouts: 4
-  params: '{}'
-  computed_outcomes:
-    homocysteine_physiological_range:
-      evaluated_by: agent
-      reason: observable 'stores.species.Homocysteine' not resolvable
-      reconcile: no_authored
-    hcy_ovulatory_floor:
-      evaluated_by: agent
-      reason: observable 'stores.species.Homocysteine' not resolvable
-      reconcile: no_authored
-    hcy_menstrual_ceiling:
-      evaluated_by: agent
-      reason: observable 'stores.species.Homocysteine' not resolvable
-      reconcile: no_authored
-    _grader:
-      version: 3-freshness
-      graded_at: '2026-11-21T15:34:48.618078+00:00'
-      inputs_hash: f5bf386c6126b9c6
+      graded_at: '2026-11-21T16:08:48.002161+00:00'
+      inputs_hash: 7d1ddc40415b7696
       store: resolved
   provenance:
     params:
@@ -213,11 +260,8 @@ simulation_set:
   - methionine
 pipeline_gate:
   gate_evaluator:
-    result: blocked
-    blocked_by:
-    - homocysteine_physiological_range
-    - hcy_ovulatory_floor
-    - hcy_menstrual_ceiling
+    result: passed
+    blocked_by: []
     evaluated_by: code
     diverges_from_authored: false
 simulation_status: ran
