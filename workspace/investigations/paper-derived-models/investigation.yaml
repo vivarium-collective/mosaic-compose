@@ -34,12 +34,13 @@ executive:
     cross-feeding loop is bistable (protective acidic Lactobacillus state vs a BV
     state with a ~mM amine pool); the one-carbon model reproduces the inverse
     estradiol-homocysteine relationship over the cycle (corr ~ -0.94).
-  verdict_status: passed
-  verdict_detail: |
+  verdict_status: in-progress
+  verdict_detail: |-
     The amine study is a mechanistic-plausibility result (one illustrative
     parameterisation, amine-inhibition term anchored to Borgogna 2021); the
     one-carbon study is a faithful recreation of Kim 2021 Fig 2 on the curated
     Reed2004 methionine-cycle SBML plus Kim's h(E2) CBS forcing.
+    Automated acceptance gate is PENDING: the member studies' behavior_tests cannot auto-grade on the xarray emitter (a viva_emitters RunReader resolution bug, reported to the discovery-engine session and being fixed). The reproductions themselves are supported by direct-simulation evidence recorded in each study's findings; the gate will compute PASS once the RunReader fix lands.
   decisions_needed:
   - question: Calibrate the amine cross-feeding model to a clinical vaginal time series (e.g. Song 2020, PRJNA637322) to map the bistability boundary quantitatively?
     context: The bistability is demonstrated under one illustrative parameterisation but not fitted to data.

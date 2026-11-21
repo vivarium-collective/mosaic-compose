@@ -12,7 +12,7 @@ executive:
 scientific_argument: Two BV papers quantify opposite arms of a biogenic-amine loop. Borgogna et al. 2021 (doi:10.1128/aem.03068-20) show Gardnerella-associated amines inhibit Lactobacillus growth (putrescine 3,179 µM → +22-33% doubling time) and suppress lactic-acid production; Puebla-Barragan et al. 2021 (doi:10.3390/ijms222212279) show Lactobacillus degrades those amines and grows faster at low pH. Closing the loop — amines ⊣ Lactobacillus growth & lactate → pH rises → favours Gardnerella, vs Lactobacillus → lactate → low pH & faster amine degradation → clears amines — predicts bistability, which this ODE reproduces.
 title: BV biogenic-amine cross-feeding
 claim: A biogenic-amine cross-feeding loop (Gardnerella amines inhibit Lactobacillus and suppress lactate; Lactobacillus degrades amines and acidifies) makes the vaginal community bistable — a protective acidic Lactobacillus state versus a Gardnerella-dominant BV state with a ~mM amine pool.
-confidence: Accepted
+confidence: Investigating
 preregistered:
   priors:
   - name: lactobacillus_protective_dominance
@@ -80,12 +80,12 @@ findings:
 report:
   title: BV biogenic-amine cross-feeding
   verdict: supported
-  confidence: medium
+  confidence: low
   evidence_quality: illustrative-mechanistic
   objective: Test whether a biogenic-amine cross-feeding loop coupling the Lactobacillus–Gardnerella community to the amine pool and pH reproduces bistable healthy/BV states.
   conclusion: The ODE is bistable as the amine data imply. The amine growth-inhibition half-constant is anchored to Borgogna 2021's measured effect size; the community/pH scaffold is illustrative (not calibrated to a clinical dataset), so the verdict is a mechanistic-plausibility result, not a quantitative fit.
   main_insight: Biogenic amines are not just a BV marker — as a cross-fed metabolite coupled to pH they are a bistability-generating mechanism, which reframes them as a therapeutic target (an amine-degrading probiotic shifts the basin boundary).
-  caveat: Single illustrative parameterisation; the bistability is demonstrated, not mapped as a calibrated phase boundary. No clinical time-series fit yet (candidate data — Song 2020 PRJNA637322).
+  caveat: "Single illustrative parameterisation; the bistability is demonstrated, not mapped as a calibrated phase boundary. No clinical time-series fit yet (candidate data — Song 2020 PRJNA637322). NOTE: the pre-registered behavior_tests are declared acceptance criteria but cannot auto-grade yet on this workspace's xarray emitter (a viva_emitters RunReader bug, reported + being fixed), so the automated gate reads 'pending/blocked', not failed. The band values are verified by direct simulation (recorded in the findings) and will grade PASS once the RunReader fix lands."
   key_metrics:
   - {name: Lactobacillus (protective, mean): null, value: 0.74, units: relative abundance}
   - {name: amine pool (mean), value: 828, units: µM}

@@ -12,7 +12,7 @@ executive:
 scientific_argument: 'Kim, Nijhout & Reed 2021 (PLOS Comput Biol, doi:10.1371/journal.pcbi.1009708) extended the Reed/Nijhout one-carbon metabolism models with estradiol-dependent enzyme activation and showed that homocysteine tracks estradiol inversely over the menstrual cycle. The dominant mechanism is estradiol activation of cystathionine-β-synthase (CBS), the transsulfuration enzyme that removes homocysteine: h(E2) = 1 + (E2−0.09)/(0.67+(E2−0.09)). We reproduce this by standing Kim''s CBS forcing and a Fourier-fit menstrual E2(t) on top of the curated, retrievable Reed2004 methionine-cycle SBML (BioModels BIOMD0000000698).'
 title: Kim 2021 one-carbon cycle
 claim: Estradiol activation of CBS (transsulfuration) makes hepatic homocysteine vary inversely with estradiol over the menstrual cycle — lowest at the ovulatory E2 peak — reproducing Kim, Nijhout & Reed 2021 on the curated Reed2004 methionine-cycle model.
-confidence: Accepted
+confidence: Investigating
 preregistered:
   priors:
   - name: homocysteine_physiological_range
@@ -81,12 +81,12 @@ findings:
 report:
   title: Kim 2021 one-carbon cycle
   verdict: supported
-  confidence: medium
+  confidence: low
   evidence_quality: faithful-recreation
   objective: Test whether estradiol activation of CBS over the menstrual cycle makes hepatic homocysteine vary inversely with estradiol, reproducing Kim, Nijhout & Reed 2021.
   conclusion: Yes — homocysteine tracks estradiol inversely (corr ≈ -0.94), lowest at the ovulatory E2 peak, built on the curated Reed2004 methionine-cycle SBML plus Kim's exact h(E2) CBS forcing. This is a faithful recreation of the paper's headline (Fig 2), not a de-novo fit.
   main_insight: The whole menstrual-cycle homocysteine swing follows from a single estradiol target (CBS); the methionine cycle's other fluxes re-balance to keep the SAM/SAH methylation ratio stable.
-  caveat: Methionine-cycle core only (folate pools clamped); Kim's PEMT g(E2) and TS/DHFR u(E2) effects act on folate-cycle enzymes not represented here. E2(t) is a 5-harmonic Fourier fit (peak slightly damped, 1.02 vs 1.15 nM).
+  caveat: "Methionine-cycle core only (folate pools clamped); Kim's PEMT g(E2) and TS/DHFR u(E2) effects act on folate-cycle enzymes not represented here. E2(t) is a 5-harmonic Fourier fit (peak slightly damped, 1.02 vs 1.15 nM). NOTE: the pre-registered behavior_tests are declared acceptance criteria but cannot auto-grade yet on this workspace's xarray emitter (a viva_emitters RunReader bug, reported + being fixed), so the automated gate reads 'pending/blocked', not failed. The band values are verified by direct simulation (recorded in the findings) and will grade PASS once the RunReader fix lands."
   key_metrics:
   - {name: corr(E2, Hcy): null, value: -0.94, units: dimensionless}
   - {name: Hcy at ovulatory peak, value: 0.60, units: µM}
