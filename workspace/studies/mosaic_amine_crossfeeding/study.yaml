@@ -1,0 +1,90 @@
+schema_version: 4
+name: mosaic_amine_crossfeeding
+created: '2026-11-21'
+status: planned
+execution_status: planned
+phase: Design
+runtime:
+  default_emitter: xarray
+executive:
+  question: Can biogenic-amine cross-feeding between Gardnerella and Lactobacillus, coupled to vaginal pH, produce the bistable healthy/BV community states that the amine data (Borgogna 2021, Puebla-Barragan 2021) imply?
+  verdict: 'Yes — the mechanistic ODE is bistable: a protective acidic Lactobacillus state (amines cleared, pH < 4.5) and a BV state (Gardnerella-dominant, ~mM amine pool, pH > 5.5), separated by the amine-inhibition / amine-degradation feedback.'
+scientific_argument: Two BV papers quantify opposite arms of a biogenic-amine loop. Borgogna et al. 2021 (doi:10.1128/aem.03068-20) show Gardnerella-associated amines inhibit Lactobacillus growth (putrescine 3,179 µM → +22-33% doubling time) and suppress lactic-acid production; Puebla-Barragan et al. 2021 (doi:10.3390/ijms222212279) show Lactobacillus degrades those amines and grows faster at low pH. Closing the loop — amines ⊣ Lactobacillus growth & lactate → pH rises → favours Gardnerella, vs Lactobacillus → lactate → low pH & faster amine degradation → clears amines — predicts bistability, which this ODE reproduces.
+readouts:
+- name: lactobacillus
+  store_path: stores.species.Lactobacillus
+  description: Lactobacillus relative abundance (protective / lactic-acid state)
+  units: relative abundance
+  status: available
+- name: gardnerella
+  store_path: stores.species.Gardnerella
+  description: Gardnerella relative abundance (BV-associated, amine producer)
+  units: relative abundance
+  status: available
+- name: amines
+  store_path: stores.species.Amines
+  description: Biogenic-amine pool (putrescine-equivalent)
+  units: µM
+  status: available
+- name: lactate
+  store_path: stores.species.Lactate
+  description: Lactic-acid / acidification proxy (pH derived from this)
+  units: arb.
+  status: available
+visualizations:
+- name: amine_crossfeeding
+  address: local:AmineCrossfeeding
+  config:
+    inputs_map:
+      lactobacillus: stores.species.Lactobacillus
+      gardnerella: stores.species.Gardnerella
+      amines: stores.species.Amines
+      lactate: stores.species.Lactate
+      time: global_time
+baseline:
+- name: mosaic_amine_crossfeeding
+  composite: mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding
+  params: {}
+variants: []
+runs:
+- name: mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795274174__8eff4b
+  status: completed
+  timestamp: 1795274194.2202082
+  emitter:
+    kind: xarray
+    store: /Users/eranagmon/code/mosaic-compose--paper-models/workspace/studies/mosaic_amine_crossfeeding/runs.mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795274174__8eff4b.zarr
+  env_id: 0987f0a483bb1068
+  variant: mosaic_amine_crossfeeding
+  generations: 1
+  n_readouts: 4
+  params: '{}'
+  computed_outcomes:
+    _grader:
+      version: 3-freshness
+      graded_at: '2026-11-21T15:16:40.004466+00:00'
+      inputs_hash: 06efc9d001a28dc7
+      store: resolved
+  provenance:
+    params:
+      n_steps:
+        value: 350
+        source: resolved
+    params_captured_at: '2026-11-21'
+    params_source: dashboard-runner
+simulation_set:
+- name: mosaic_amine_crossfeeding-baseline
+  kind: single
+  base_model: mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding
+  is_baseline: true
+  status: planned
+  metrics:
+  - lactobacillus
+  - gardnerella
+  - amines
+  - lactate
+pipeline_gate:
+  gate_evaluator:
+    result: not_started
+    blocked_by: []
+    evaluated_by: code
+    diverges_from_authored: false

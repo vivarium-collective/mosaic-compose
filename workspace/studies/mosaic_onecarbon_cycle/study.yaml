@@ -1,0 +1,91 @@
+schema_version: 4
+name: mosaic_onecarbon_cycle
+created: '2026-11-21'
+status: planned
+execution_status: planned
+phase: Design
+runtime:
+  default_emitter: xarray
+executive:
+  question: Does hepatic homocysteine vary across the menstrual cycle with estradiol, and in which direction — as Kim, Nijhout & Reed 2021 predict from estradiol activation of the transsulfuration enzyme CBS?
+  verdict: Yes, inversely. Driving the curated Reed2004 methionine-cycle model with a menstrual-cycle estradiol input and Kim's estradiol activation of CBS, homocysteine falls as estradiol rises — reaching its minimum (~0.6 µM) at the ovulatory E2 peak (~day 12) and its maximum (~1.0 µM) at menstruation (corr(E2, Hcy) ≈ −0.94), reproducing Kim 2021 Fig 2.
+scientific_argument: 'Kim, Nijhout & Reed 2021 (PLOS Comput Biol, doi:10.1371/journal.pcbi.1009708) extended the Reed/Nijhout one-carbon metabolism models with estradiol-dependent enzyme activation and showed that homocysteine tracks estradiol inversely over the menstrual cycle. The dominant mechanism is estradiol activation of cystathionine-β-synthase (CBS), the transsulfuration enzyme that removes homocysteine: h(E2) = 1 + (E2−0.09)/(0.67+(E2−0.09)). We reproduce this by standing Kim''s CBS forcing and a Fourier-fit menstrual E2(t) on top of the curated, retrievable Reed2004 methionine-cycle SBML (BioModels BIOMD0000000698).'
+report:
+  verdict: supported
+readouts:
+- name: homocysteine
+  store_path: stores.species.Homocysteine
+  description: Hepatic homocysteine — the transsulfuration substrate CBS removes
+  units: µM
+  status: available
+- name: sam
+  store_path: stores.species.AdoMet
+  description: S-adenosylmethionine (SAM / AdoMet), the universal methyl donor
+  units: µM
+  status: available
+- name: sah
+  store_path: stores.species.AdoHcy
+  description: S-adenosylhomocysteine (SAH / AdoHcy)
+  units: µM
+  status: available
+- name: methionine
+  store_path: stores.species.Methionine
+  description: Methionine
+  units: µM
+  status: available
+visualizations:
+- name: onecarbon_homocysteine
+  address: local:OneCarbonHomocysteine
+  config:
+    inputs_map:
+      homocysteine: stores.species.Homocysteine
+      sam: stores.species.AdoMet
+      sah: stores.species.AdoHcy
+      time: global_time
+baseline:
+- name: mosaic_onecarbon_cycle
+  composite: mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle
+  params: {}
+variants: []
+runs:
+- name: mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795274215__73085b
+  status: completed
+  timestamp: 1795274225.743555
+  emitter:
+    kind: xarray
+    store: /Users/eranagmon/code/mosaic-compose--paper-models/workspace/studies/mosaic_onecarbon_cycle/runs.mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795274215__73085b.zarr
+  env_id: 0987f0a483bb1068
+  variant: mosaic_onecarbon_cycle
+  generations: 1
+  n_readouts: 4
+  params: '{}'
+  computed_outcomes:
+    _grader:
+      version: 3-freshness
+      graded_at: '2026-11-21T15:17:09.455815+00:00'
+      inputs_hash: ae20b3d70591618d
+      store: resolved
+  provenance:
+    params:
+      n_steps:
+        value: 672
+        source: resolved
+    params_captured_at: '2026-11-21'
+    params_source: dashboard-runner
+simulation_set:
+- name: mosaic_onecarbon_cycle-baseline
+  kind: single
+  base_model: mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle
+  is_baseline: true
+  status: planned
+  metrics:
+  - homocysteine
+  - sam
+  - sah
+  - methionine
+pipeline_gate:
+  gate_evaluator:
+    result: not_started
+    blocked_by: []
+    evaluated_by: code
+    diverges_from_authored: false

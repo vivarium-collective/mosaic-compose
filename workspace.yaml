@@ -153,7 +153,61 @@ datasets:
   source: "AERSMine; Sarangdhar et al. 2016, Nat Biotechnol"
   description: "Drug/sex/adverse-event signal mining for sex-specific toxicity (resmetirom,
     metronidazole, GLP-1 RAs)."
-
+  claims: []
+  # --- Retrievable model files (SBML) — one-carbon / methionine metabolism ---
+- name: "Reed2004 methionine cycle (BioModels BIOMD0000000698)"
+  url: "https://www.ebi.ac.uk/biomodels/BIOMD0000000698"
+  format: SBML
+  source: "Reed et al. 2004, J Theor Biol (curated BioModels)"
+  description: "Curated methionine-cycle ODE model (Met/SAM/SAH/Hcy; MAT, GNMT, CBS,
+    BHMT, MS). Bundled at mosaic_compose/data/models/ and used as the base for the
+    mosaic_onecarbon_cycle study (Kim 2021 estradiol-forcing recreation)."
+  claims: []
+- name: "Nijhout2004 folate cycle (BioModels BIOMD0000000213)"
+  url: "https://www.ebi.ac.uk/biomodels/BIOMD0000000213"
+  format: SBML
+  source: "Nijhout et al. 2004, J Biol Chem (curated BioModels)"
+  description: "Curated folate-cycle ODE model (5mTHF/THF/DHF/CH2/CH/10fTHF). The
+    folate half of the Kim 2021 one-carbon network; retrievable for extending the
+    one-carbon study beyond the methionine core."
+  claims: []
+- name: "Reed2008 integrated folate+methionine+GSH (BioModels BIOMD0000000268)"
+  url: "https://www.ebi.ac.uk/biomodels/BIOMD0000000268"
+  format: SBML
+  source: "Reed et al. 2008, Theor Biol Med Model (curated BioModels)"
+  description: "Largest curated one-carbon metabolism model (folate + methionine +
+    transsulfuration + glutathione) — the closest published ancestor of the full
+    Kim 2021 19-ODE network; retrievable SBML for a higher-fidelity port."
+  claims: []
+  # --- BV reading-list sequence datasets (from 'Articles of interest - BV') ---
+- name: "Daily vaginal microbiota, hormonal cycle (PRJNA637322)"
+  url: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA637322"
+  format: "16S amplicon"
+  source: "Song et al. 2020, mSphere"
+  description: "Dense daily vaginal 16S time series (26 women, ~10 wk) across the
+    hormonal cycle, contraceptives, diet, exercise — candidate gLV / CST-dynamics
+    validation set."
+  claims: []
+- name: "BV biogenic-amine metabolomics cohort (PRJNA575586)"
+  url: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA575586"
+  format: "16S amplicon + metabolite data"
+  source: "Borgogna et al. 2021, Appl Environ Microbiol"
+  description: "Vaginal biogenic-amine + microbiota cohort behind the amine→Lactobacillus
+    growth-inhibition kinetics seeding mosaic_amine_crossfeeding."
+  claims: []
+- name: "Lactobacillus amine-degradation strains (ENA PRJEB48740)"
+  url: "https://www.ebi.ac.uk/ena/browser/view/PRJEB48740"
+  format: "16S amplicon"
+  source: "Puebla-Barragan et al. 2021, Int J Mol Sci"
+  description: "Vaginal Lactobacillus strains assayed for biogenic-amine degradation —
+    the reverse (amine-sink) arm of the mosaic_amine_crossfeeding loop."
+  claims: []
+- name: "BV syntrophy metaproteomics (PRJNA881379)"
+  url: "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA881379"
+  format: "metagenomics + metaproteomics"
+  source: "Lee et al. 2025, ISME J"
+  description: "BV cross-feeding (ornithine→putrescine, formate) metaproteomics —
+    substrate for a future multi-species syntrophic community model."
   claims: []
 references_bib: workspace/references/papers.bib
 server:
