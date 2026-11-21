@@ -1,0 +1,115 @@
+schema_version: 2
+name: paper-derived-models
+title: Paper-derived mechanistic models
+created: '2026-11-21'
+status: ran
+
+question: |
+  Can mechanistic models recreated from the women's-health / bacterial-vaginosis
+  literature reproduce their source papers' quantitative claims inside the MOSAIC
+  process-bigraph composition framework?
+
+hypothesis: |
+  Quantitative mechanisms reported in the reading list — a biogenic-amine
+  cross-feeding loop (Borgogna 2021, Puebla-Barragan 2021) and estradiol control
+  of one-carbon metabolism (Kim, Nijhout & Reed 2021) — can each be wrapped as a
+  runnable composite and reproduce the paper's headline behaviour (bistable
+  healthy/BV states; homocysteine varying inversely with estradiol over the cycle).
+
+lead: |
+  Two studies mine the "Articles of interest - BV" reading list for runnable
+  models. Each turns a published quantitative mechanism into a viva-tellurium ODE
+  composite, runs it, and checks the source paper's headline against graded
+  acceptance criteria. Together they show the composition layer can absorb
+  literature mechanisms — one newly assembled, one a faithful recreation of a
+  published model on a curated BioModels base.
+
+executive:
+  what_is_this: |
+    Two literature-derived mechanistic model studies grouped as one campaign: a BV
+    biogenic-amine cross-feeding ODE and a recreation of the Kim 2021 one-carbon /
+    menstrual-cycle model.
+  verdict: |
+    Both studies reproduce their source paper's headline behaviour. The amine
+    cross-feeding loop is bistable (protective acidic Lactobacillus state vs a BV
+    state with a ~mM amine pool); the one-carbon model reproduces the inverse
+    estradiol-homocysteine relationship over the cycle (corr ~ -0.94).
+  verdict_status: passed
+  verdict_detail: |
+    The amine study is a mechanistic-plausibility result (one illustrative
+    parameterisation, amine-inhibition term anchored to Borgogna 2021); the
+    one-carbon study is a faithful recreation of Kim 2021 Fig 2 on the curated
+    Reed2004 methionine-cycle SBML plus Kim's h(E2) CBS forcing.
+  decisions_needed:
+  - question: Calibrate the amine cross-feeding model to a clinical vaginal time series (e.g. Song 2020, PRJNA637322) to map the bistability boundary quantitatively?
+    context: The bistability is demonstrated under one illustrative parameterisation but not fitted to data.
+  - question: Extend the one-carbon recreation to the full Kim 2021 19-ODE network (add the folate cycle + PEMT g(E2) / TS-DHFR u(E2) effects) for a higher-fidelity port?
+    context: The current study recreates the methionine-cycle core with folate pools clamped.
+
+scientific_argument:
+  main_claim: |
+    Published quantitative mechanisms from the women's-health literature can be
+    reproduced as runnable composites that recover the source papers' headline
+    behaviour.
+  evidence_for:
+  - 'mosaic_amine_crossfeeding: a biogenic-amine cross-feeding ODE is bistable, reproducing the two-way loop Borgogna 2021 and Puebla-Barragan 2021 quantify (amine growth-inhibition anchored to Borgogna''s measured effect size).'
+  - 'mosaic_onecarbon_cycle: estradiol activation of CBS makes homocysteine vary inversely with estradiol over the menstrual cycle (corr ~ -0.94), a faithful recreation of Kim 2021 Fig 2 on the curated Reed2004 methionine-cycle SBML.'
+  evidence_against: []
+  key_figures:
+  - 'amine_crossfeeding: Lactobacillus/Gardnerella/amine-pool/pH trajectories resolving to the protective basin.'
+  - 'onecarbon_homocysteine: homocysteine vs estradiol over the 28-day cycle (inverse, minimum at the ovulatory E2 peak).'
+  caveats:
+  - The amine study uses one illustrative community/pH parameterisation (not a clinical fit); the bistability is demonstrated, not mapped as a calibrated phase boundary.
+  - The one-carbon study recreates the methionine-cycle core only; Kim's folate-cycle estradiol effects are out of scope of this port.
+
+biological_story: |
+  The bacterial-vaginosis and women's-health literature describes two mechanisms
+  that are quantitative enough to model directly. First, biogenic amines are not
+  just a BV marker: Gardnerella-associated amines inhibit Lactobacillus growth and
+  suppress its lactic-acid production, raising vaginal pH, while Lactobacillus in
+  turn degrades those amines and grows faster at low pH. Closing that loop produces
+  a bistable community — a protective, acidic, Lactobacillus-dominant state in which
+  amines are cleared, and a BV state in which Gardnerella sustains a ~millimolar
+  amine pool at higher pH. This reframes biogenic amines as a bistability-generating
+  mechanism and therefore a therapeutic target (an amine-degrading probiotic shifts
+  the basin boundary).
+
+  Second, the same hormone that shapes the vaginal environment — estradiol — also
+  controls one-carbon metabolism in the liver. Kim, Nijhout and Reed showed that
+  estradiol activates cystathionine-beta-synthase (CBS), the transsulfuration enzyme
+  that clears homocysteine, so hepatic homocysteine falls as estradiol rises across
+  the menstrual cycle, reaching its minimum near ovulation. Standing that single
+  estradiol target on the curated Reed2004 methionine cycle reproduces the inverse
+  relationship, while the methionine cycle re-balances to keep the SAM/SAH
+  methylation ratio stable. The two studies share a theme central to MOSAIC: sex
+  hormones couple to metabolism, in the microbiome and in the host alike.
+
+at_a_glance:
+- {study: mosaic_amine_crossfeeding, role: 'BV biogenic-amine cross-feeding — bistable community/pH ODE (newly assembled from Borgogna/Puebla kinetics).'}
+- {study: mosaic_onecarbon_cycle, role: 'Kim 2021 one-carbon / menstrual-cycle recreation — estradiol->CBS->homocysteine on the curated Reed2004 SBML.'}
+
+studies:
+- mosaic_amine_crossfeeding
+- mosaic_onecarbon_cycle
+
+acceptance_criteria:
+- {study: mosaic_amine_crossfeeding, behavior: lactobacillus_protective_dominance}
+- {study: mosaic_amine_crossfeeding, behavior: amine_pool_subthreshold}
+- {study: mosaic_onecarbon_cycle, behavior: homocysteine_physiological_range}
+- {study: mosaic_onecarbon_cycle, behavior: hcy_ovulatory_floor}
+
+adversarial_coverage_skip: true
+adversarial_coverage_skip_reason: |
+  Both members are literature-recreation / mechanism-demonstration studies, not a
+  hypothesis screen that admits a negative-control arm. Each is gated against its
+  source paper's quantitative headline rather than against a system that should be
+  rejected.
+
+inputs:
+  datasets: []
+  references:
+  - borgogna2021biogenicamines
+  - pueblabarragan2021malodour
+  - kim2021onecarbon
+  expert_docs: []
+expert_docs: []

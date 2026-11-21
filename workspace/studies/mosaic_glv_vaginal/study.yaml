@@ -1,8 +1,8 @@
 schema_version: 4
 name: mosaic_glv_vaginal
 created: '2026-10-24'
-status: planned
-execution_status: planned
+status: ran
+execution_status: ran
 phase: Design
 runtime:
   default_emitter: xarray
@@ -70,3 +70,5 @@ pipeline_gate:
     blocked_by: []
     evaluated_by: code
     diverges_from_authored: false
+simulation_status: ran
+evaluation_status: not_evaluated
