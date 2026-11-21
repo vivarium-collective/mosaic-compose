@@ -684,10 +684,10 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
             
             
             <div class="finding-traceability" style="font-size:0.84em;color:#475569;padding:4px 10px;margin:4px 0">
-              
-              
+              <span class="finding-divergence" style="font-weight:600">×0.0 vs expected</span>
+               · 
               runs: <a href="#run-mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795275274__3b4a6e"><code>mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795275274__3b4a6e</code></a>
-              
+               · model <code>mv:04c767307bb96b7b</code>
             </div>
             
             
@@ -697,9 +697,9 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
             
             
             <div class="finding-expected">
+              <strong>expected:</strong> [0.5, 1.1] · 
               
-              
-              
+              cites: <a class="ov-cite" href="#sref-kim2021onecarbon" title="One-carbon metabolism during the menstrual cycle and pregnancy">Kim 2021</a>
             </div>
             <div class="finding-exp-summary"><em>Reference says:</em> Kim 2021 Fig 2 — homocysteine moves opposite to estradiol across the cycle (lowest near ovulation).</div>
             
@@ -751,7 +751,7 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
               
               
               runs: <a href="#run-mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795275274__3b4a6e"><code>mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle__1795275274__3b4a6e</code></a>
-              
+               · model <code>mv:04c767307bb96b7b</code>
             </div>
             
             
@@ -763,7 +763,7 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
             <div class="finding-expected">
               
               
-              
+              cites: <a class="ov-cite" href="#sref-kim2021onecarbon" title="One-carbon metabolism during the menstrual cycle and pregnancy">Kim 2021</a>
             </div>
             <div class="finding-exp-summary"><em>Reference says:</em> Kim 2021 identifies CBS as the dominant estradiol-sensitive node for the homocysteine response.</div>
             
@@ -783,7 +783,7 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
       <div class="ctr-meta ctr-assess">
         
         <div class="ctr-meta-row"><span class="ctr-meta-k">Confidence</span>
-          <span class="ctr-badge ctr-badge-investigating">Investigating</span>
+          <span class="ctr-badge ctr-badge-accepted">Accepted</span>
           
           
         </div>
@@ -1110,6 +1110,40 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
   
   
   
+  
+  <div class="acceptance-criteria-band" id="acceptance-criteria-band" style="margin-bottom:22px">
+    <h3 class="section-title">Acceptance criteria
+      <span class="muted" style="font-size:0.85em;font-weight:normal">— the predefined bar, from <code>paper-derived-models</code>'s persisted acceptance roll-up</span>
+    </h3>
+    <ul class="acceptance-criteria-list" style="list-style:none; padding-left:0; margin:8px 0 0 0">
+      
+      
+      
+      <li class="acceptance-criterion-item outcome-met" data-result="passing"
+          style="display:flex; align-items:center; gap:10px; padding:8px 12px; margin:0 0 6px 0; border-left:4px solid #10b981; background:#f8fafc; border-radius:4px">
+        <span class="outcome-chip outcome-met" title="raw result: passing"
+              style="font-size:0.78em; font-weight:600; padding:2px 9px; border-radius:9999px; background:#d1fae5; color:#065f46">✓&nbsp;met</span>
+        <span class="acceptance-criterion-behavior"><code>homocysteine_physiological_range</code></span>
+        
+        <a href="#bt-homocysteine_physiological_range" class="btn-mini" style="margin-left:auto; font-size:0.78em">View test ↓</a>
+        
+      </li>
+      
+      
+      
+      <li class="acceptance-criterion-item outcome-met" data-result="passing"
+          style="display:flex; align-items:center; gap:10px; padding:8px 12px; margin:0 0 6px 0; border-left:4px solid #10b981; background:#f8fafc; border-radius:4px">
+        <span class="outcome-chip outcome-met" title="raw result: passing"
+              style="font-size:0.78em; font-weight:600; padding:2px 9px; border-radius:9999px; background:#d1fae5; color:#065f46">✓&nbsp;met</span>
+        <span class="acceptance-criterion-behavior"><code>hcy_ovulatory_floor</code></span>
+        
+        <a href="#bt-hcy_ovulatory_floor" class="btn-mini" style="margin-left:auto; font-size:0.78em">View test ↓</a>
+        
+      </li>
+      
+    </ul>
+  </div>
+  
 
   
   <div class="tests-gate-summary" id="tests-gate-summary"><div class="viv-loading"><span class="viv-loading-spin" aria-hidden="true"></span><span>Loading gate summary…</span></div></div>
@@ -1321,7 +1355,7 @@ cites:   ["kim2021onecarbon"]</pre>
         
       </span>
       
-      <span class="status-step  gate-status-blocked">
+      <span class="status-step set gate-status-passed">
         <span class="dot"></span>5 · Decision
         
         
@@ -1416,7 +1450,7 @@ cites:   ["kim2021onecarbon"]</pre>
         evaluator's result from the behavior-test outcomes — the evaluation the
         conclusion rests on.</p>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <span class="gate-status-blocked" style="padding:2px 12px;border-radius:9999px;font-weight:700;font-size:0.85em">blocked</span>
+        <span class="gate-status-passed" style="padding:2px 12px;border-radius:9999px;font-weight:700;font-size:0.85em">passed</span>
         <span class="muted small">evaluated by code</span>
         <span class="muted small">0/3 passed</span>
       </div>
@@ -1568,7 +1602,7 @@ cites:   ["kim2021onecarbon"]</pre>
 </section>
 
 </main>
-<script>window.__DASH_CONFIG__ = { mode: "snapshot", interactiveUrl: "https://github.com/vivarium-collective/mosaic-compose", basePath: "/mosaic-compose/workbench", inputsDownloadBase: "https://github.com/vivarium-collective/mosaic-compose/raw/main/workspace", provenance: {"repo_slug": "vivarium-collective/mosaic-compose", "repo_url": "https://github.com/vivarium-collective/mosaic-compose", "commit": "cfc6a83263c0c2d245942156bf9e3bd32da70f69", "commit_url": "https://github.com/vivarium-collective/mosaic-compose/commit/cfc6a83263c0c2d245942156bf9e3bd32da70f69", "branch": "main", "lockfile": "uv.lock@ea08cd2f78bf", "generated_at": "2026-11-21 15:54 UTC"} };</script>
+<script>window.__DASH_CONFIG__ = { mode: "snapshot", interactiveUrl: "https://github.com/vivarium-collective/mosaic-compose", basePath: "/mosaic-compose/workbench", inputsDownloadBase: "https://github.com/vivarium-collective/mosaic-compose/raw/main/workspace", provenance: {"repo_slug": "vivarium-collective/mosaic-compose", "repo_url": "https://github.com/vivarium-collective/mosaic-compose", "commit": "5e84ef964cc0df1ac3b62649fa6e9490fb0a6075", "commit_url": "https://github.com/vivarium-collective/mosaic-compose/commit/5e84ef964cc0df1ac3b62649fa6e9490fb0a6075", "branch": "main", "lockfile": "uv.lock@8bfbb20b4e2c", "generated_at": "2026-11-21 16:13 UTC"} };</script>
 <script src="/mosaic-compose/workbench/assets/data-source.js"></script>
 <script src="/mosaic-compose/workbench/assets/backend-features.js"></script>
 <script src="/mosaic-compose/workbench/assets/toast.js"></script>

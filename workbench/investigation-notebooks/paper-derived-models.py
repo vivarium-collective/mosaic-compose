@@ -258,6 +258,7 @@ def _render_one(address, config, runs_db, study_yaml, overrides=None):
 # | --- | --- | --- | --- |
 # | `mosaic_amine_crossfeeding` | `mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding` | 350 | — |
 # | `mosaic_amine_crossfeeding` | `mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding` | 350 | — |
+# | `mosaic_amine_crossfeeding` | `mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding` | 350 | — |
 
 # ### The model & its parameters
 #
@@ -290,9 +291,20 @@ STEPS_mosaic_amine_crossfeeding = 350
 INTERVAL_mosaic_amine_crossfeeding = 1.0
 STEPS_mosaic_amine_crossfeeding = 350
 INTERVAL_mosaic_amine_crossfeeding = 1.0
+STEPS_mosaic_amine_crossfeeding = 350
+INTERVAL_mosaic_amine_crossfeeding = 1.0
 
 if RERUN:
     from process_bigraph import Composite
+    try:
+        with quiet():  # keep per-step stdout out of the notebook
+            _ov = ov_mosaic_compose_composites_crossfeeding_mosaic_amine_crossfeeding if 'ov_mosaic_compose_composites_crossfeeding_mosaic_amine_crossfeeding' in dir() else None  # edits from the panel cell, if any
+            spec_mosaic_compose_composites_crossfeeding_mosaic_amine_crossfeeding = materialize_composite('mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding', _ov)
+            _comp = Composite({'state': spec_mosaic_compose_composites_crossfeeding_mosaic_amine_crossfeeding['state']}, core=core)
+            _comp.run(STEPS_mosaic_amine_crossfeeding)
+        print('ran', 'mosaic_amine_crossfeeding', f'(mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding) for', STEPS_mosaic_amine_crossfeeding, 'steps')
+    except Exception as _e:
+        print(f"mosaic_amine_crossfeeding not runnable yet: {type(_e).__name__}: {_e}")
     try:
         with quiet():  # keep per-step stdout out of the notebook
             _ov = ov_mosaic_compose_composites_crossfeeding_mosaic_amine_crossfeeding if 'ov_mosaic_compose_composites_crossfeeding_mosaic_amine_crossfeeding' in dir() else None  # edits from the panel cell, if any
@@ -351,6 +363,7 @@ _save_viz('mosaic_amine_crossfeeding', 'amine_crossfeeding', _render_one('local:
 # | --- | --- | --- | --- |
 # | `mosaic_onecarbon_cycle` | `mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle` | 672 | — |
 # | `mosaic_onecarbon_cycle` | `mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle` | 672 | — |
+# | `mosaic_onecarbon_cycle` | `mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle` | 672 | — |
 
 # ### The model & its parameters
 #
@@ -383,9 +396,20 @@ STEPS_mosaic_onecarbon_cycle = 672
 INTERVAL_mosaic_onecarbon_cycle = 1.0
 STEPS_mosaic_onecarbon_cycle = 672
 INTERVAL_mosaic_onecarbon_cycle = 1.0
+STEPS_mosaic_onecarbon_cycle = 672
+INTERVAL_mosaic_onecarbon_cycle = 1.0
 
 if RERUN:
     from process_bigraph import Composite
+    try:
+        with quiet():  # keep per-step stdout out of the notebook
+            _ov = ov_mosaic_compose_composites_onecarbon_mosaic_onecarbon_cycle if 'ov_mosaic_compose_composites_onecarbon_mosaic_onecarbon_cycle' in dir() else None  # edits from the panel cell, if any
+            spec_mosaic_compose_composites_onecarbon_mosaic_onecarbon_cycle = materialize_composite('mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle', _ov)
+            _comp = Composite({'state': spec_mosaic_compose_composites_onecarbon_mosaic_onecarbon_cycle['state']}, core=core)
+            _comp.run(STEPS_mosaic_onecarbon_cycle)
+        print('ran', 'mosaic_onecarbon_cycle', f'(mosaic_compose.composites.onecarbon.mosaic_onecarbon_cycle) for', STEPS_mosaic_onecarbon_cycle, 'steps')
+    except Exception as _e:
+        print(f"mosaic_onecarbon_cycle not runnable yet: {type(_e).__name__}: {_e}")
     try:
         with quiet():  # keep per-step stdout out of the notebook
             _ov = ov_mosaic_compose_composites_onecarbon_mosaic_onecarbon_cycle if 'ov_mosaic_compose_composites_onecarbon_mosaic_onecarbon_cycle' in dir() else None  # edits from the panel cell, if any

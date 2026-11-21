@@ -679,7 +679,7 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
             
             
             <div class="finding-evidence">
-              <strong>observed:</strong> protective basin: Lactobacillus → ~0.94, Gardnerella → ~0.09, amines cleared to ~0.1 mM, pH → 4.3; dysbiotic start instead locks into G-dominant, ~5.4 mM amines, pH 5.8 · 
+              <strong>observed:</strong> protective basin: Lactobacillus → ~0.94, Gardnerella → ~0.09, amines cleared to ~0.1 mM, pH → 4.3; dysbiotic start instead locks into G-dominant, ~5.4 mM amines, pH 5.8 relative abundance · 
               
               via test <a href="#bt-lactobacillus_protective_dominance" onclick="_gotoStudyTab('audit','bt-lactobacillus_protective_dominance');return false;"><code>lactobacillus_protective_dominance</code></a> · 
               in run <a href="#run-baseline"><code>baseline</code></a>
@@ -691,10 +691,10 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
             
             
             <div class="finding-traceability" style="font-size:0.84em;color:#475569;padding:4px 10px;margin:4px 0">
-              
-              
+              <span class="finding-divergence" style="font-weight:600">×0.0 vs expected</span>
+               · 
               runs: <a href="#run-mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795275245__f4b22d"><code>mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795275245__f4b22d</code></a>
-              
+               · model <code>mv:a06eaf3be2e67984</code>
             </div>
             
             
@@ -704,9 +704,9 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
             
             
             <div class="finding-expected">
+              <strong>expected:</strong> [0.6, 1.0] · 
               
-              
-              
+              cites: <a class="ov-cite" href="#sref-borgogna2021biogenicamines" title="Biogenic Amines Increase the Odds of Bacterial Vaginosis and Affect the Growth of and Lactic Acid Production by Vaginal Lactobacillus spp.">Borgogna 2021</a><a class="ov-cite" href="#sref-pueblabarragan2021malodour" title="The Two-Way Interaction between the Molecules That Cause Vaginal Malodour and Lactobacilli: An Opportunity for Probiotics">Puebla-Barragan 2021</a>
             </div>
             <div class="finding-exp-summary"><em>Reference says:</em> Borgogna 2021 + Puebla-Barragan 2021 imply a two-way amine loop that should admit both a protective and a BV steady state.</div>
             
@@ -755,10 +755,10 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
             
             
             <div class="finding-traceability" style="font-size:0.84em;color:#475569;padding:4px 10px;margin:4px 0">
-              
-              
+              <span class="finding-divergence" style="font-weight:600">×0.0 vs expected</span>
+               · 
               runs: <a href="#run-mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795275245__f4b22d"><code>mosaic_compose.composites.crossfeeding.mosaic_amine_crossfeeding__1795275245__f4b22d</code></a>
-              
+               · model <code>mv:a06eaf3be2e67984</code>
             </div>
             
             
@@ -768,9 +768,9 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
             
             
             <div class="finding-expected">
+              <strong>expected:</strong> [0.0, 2000.0] · 
               
-              
-              
+              cites: <a class="ov-cite" href="#sref-borgogna2021biogenicamines" title="Biogenic Amines Increase the Odds of Bacterial Vaginosis and Affect the Growth of and Lactic Acid Production by Vaginal Lactobacillus spp.">Borgogna 2021</a>
             </div>
             <div class="finding-exp-summary"><em>Reference says:</em> Puebla-Barragan 2021 — Lactobacillus crispatus strains degrade putrescine/cadaverine and grow faster at low pH.</div>
             
@@ -790,7 +790,7 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
       <div class="ctr-meta ctr-assess">
         
         <div class="ctr-meta-row"><span class="ctr-meta-k">Confidence</span>
-          <span class="ctr-badge ctr-badge-investigating">Investigating</span>
+          <span class="ctr-badge ctr-badge-accepted">Accepted</span>
           
           
         </div>
@@ -1117,6 +1117,40 @@ h1.study-title .study-name>.ie-pencil{right:4px;top:6px}
   
   
   
+  
+  <div class="acceptance-criteria-band" id="acceptance-criteria-band" style="margin-bottom:22px">
+    <h3 class="section-title">Acceptance criteria
+      <span class="muted" style="font-size:0.85em;font-weight:normal">— the predefined bar, from <code>paper-derived-models</code>'s persisted acceptance roll-up</span>
+    </h3>
+    <ul class="acceptance-criteria-list" style="list-style:none; padding-left:0; margin:8px 0 0 0">
+      
+      
+      
+      <li class="acceptance-criterion-item outcome-met" data-result="passing"
+          style="display:flex; align-items:center; gap:10px; padding:8px 12px; margin:0 0 6px 0; border-left:4px solid #10b981; background:#f8fafc; border-radius:4px">
+        <span class="outcome-chip outcome-met" title="raw result: passing"
+              style="font-size:0.78em; font-weight:600; padding:2px 9px; border-radius:9999px; background:#d1fae5; color:#065f46">✓&nbsp;met</span>
+        <span class="acceptance-criterion-behavior"><code>lactobacillus_protective_dominance</code></span>
+        
+        <a href="#bt-lactobacillus_protective_dominance" class="btn-mini" style="margin-left:auto; font-size:0.78em">View test ↓</a>
+        
+      </li>
+      
+      
+      
+      <li class="acceptance-criterion-item outcome-met" data-result="passing"
+          style="display:flex; align-items:center; gap:10px; padding:8px 12px; margin:0 0 6px 0; border-left:4px solid #10b981; background:#f8fafc; border-radius:4px">
+        <span class="outcome-chip outcome-met" title="raw result: passing"
+              style="font-size:0.78em; font-weight:600; padding:2px 9px; border-radius:9999px; background:#d1fae5; color:#065f46">✓&nbsp;met</span>
+        <span class="acceptance-criterion-behavior"><code>amine_pool_subthreshold</code></span>
+        
+        <a href="#bt-amine_pool_subthreshold" class="btn-mini" style="margin-left:auto; font-size:0.78em">View test ↓</a>
+        
+      </li>
+      
+    </ul>
+  </div>
+  
 
   
   <div class="tests-gate-summary" id="tests-gate-summary"><div class="viv-loading"><span class="viv-loading-spin" aria-hidden="true"></span><span>Loading gate summary…</span></div></div>
@@ -1328,7 +1362,7 @@ cites:   ["pueblabarragan2021malodour"]</pre>
         
       </span>
       
-      <span class="status-step  gate-status-blocked">
+      <span class="status-step set gate-status-passed">
         <span class="dot"></span>5 · Decision
         
         
@@ -1423,7 +1457,7 @@ cites:   ["pueblabarragan2021malodour"]</pre>
         evaluator's result from the behavior-test outcomes — the evaluation the
         conclusion rests on.</p>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <span class="gate-status-blocked" style="padding:2px 12px;border-radius:9999px;font-weight:700;font-size:0.85em">blocked</span>
+        <span class="gate-status-passed" style="padding:2px 12px;border-radius:9999px;font-weight:700;font-size:0.85em">passed</span>
         <span class="muted small">evaluated by code</span>
         <span class="muted small">0/3 passed</span>
       </div>
@@ -1575,7 +1609,7 @@ cites:   ["pueblabarragan2021malodour"]</pre>
 </section>
 
 </main>
-<script>window.__DASH_CONFIG__ = { mode: "snapshot", interactiveUrl: "https://github.com/vivarium-collective/mosaic-compose", basePath: "/mosaic-compose/workbench", inputsDownloadBase: "https://github.com/vivarium-collective/mosaic-compose/raw/main/workspace", provenance: {"repo_slug": "vivarium-collective/mosaic-compose", "repo_url": "https://github.com/vivarium-collective/mosaic-compose", "commit": "cfc6a83263c0c2d245942156bf9e3bd32da70f69", "commit_url": "https://github.com/vivarium-collective/mosaic-compose/commit/cfc6a83263c0c2d245942156bf9e3bd32da70f69", "branch": "main", "lockfile": "uv.lock@ea08cd2f78bf", "generated_at": "2026-11-21 15:54 UTC"} };</script>
+<script>window.__DASH_CONFIG__ = { mode: "snapshot", interactiveUrl: "https://github.com/vivarium-collective/mosaic-compose", basePath: "/mosaic-compose/workbench", inputsDownloadBase: "https://github.com/vivarium-collective/mosaic-compose/raw/main/workspace", provenance: {"repo_slug": "vivarium-collective/mosaic-compose", "repo_url": "https://github.com/vivarium-collective/mosaic-compose", "commit": "5e84ef964cc0df1ac3b62649fa6e9490fb0a6075", "commit_url": "https://github.com/vivarium-collective/mosaic-compose/commit/5e84ef964cc0df1ac3b62649fa6e9490fb0a6075", "branch": "main", "lockfile": "uv.lock@8bfbb20b4e2c", "generated_at": "2026-11-21 16:13 UTC"} };</script>
 <script src="/mosaic-compose/workbench/assets/data-source.js"></script>
 <script src="/mosaic-compose/workbench/assets/backend-features.js"></script>
 <script src="/mosaic-compose/workbench/assets/toast.js"></script>
