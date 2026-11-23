@@ -5,6 +5,7 @@
 
 [![CI](https://github.com/vivarium-collective/mosaic-compose/actions/workflows/workspace-ci.yml/badge.svg)](https://github.com/vivarium-collective/mosaic-compose/actions/workflows/workspace-ci.yml)
 [![read-only workbench](https://img.shields.io/badge/read--only_workbench-live-2ea44f)](https://vivarium-collective.github.io/mosaic-compose/workbench/)
+[![license](https://img.shields.io/github/license/vivarium-collective/mosaic-compose)](./LICENSE)
 <!-- END:badges -->
 
 <!-- BEGIN:dashboard -->
