@@ -5,13 +5,14 @@ description = "MOSAIC — composition layer coupling metabolic, microbiome-commu
 license = "Apache-2.0"
 requires-python = ">=3.11"
 dependencies = [
-    "process-bigraph",
-    # Pin below 1.8.4: that release removed `bigraph_schema.matching`, which the
-    # resolved process-bigraph (1.11.0) still imports via `process_bigraph.holes`.
-    # An unpinned CI resolve grabs >=1.8.4 and the publish/build dies with
-    # `ModuleNotFoundError: No module named 'bigraph_schema.matching'`. 1.8.2 is
-    # the ecosystem-lockstep version the working venvs use.
-    "bigraph-schema<1.8.4",
+    # >=1.11.2: the first release whose holes.py no longer imports the removed
+    # `bigraph_schema.matching`, so it does not transitively cap bigraph-schema
+    # below 1.8.4.
+    "process-bigraph>=1.11.2",
+    # The <1.8.4 cap was only needed because older process-bigraph imported the
+    # removed `bigraph_schema.matching` transitively; process-bigraph 1.11.2 dropped
+    # that, so the cap is retired. This workspace does not import matching directly.
+    "bigraph-schema>=1.8.1",
     # viva-cobra — COBRApy dynamic-FBA components for the metabolic-arm composites.
     "viva-cobra @ git+https://github.com/vivarium-collective/viva-cobra.git@main",
     "bigraph-viz>=2.0.3",
