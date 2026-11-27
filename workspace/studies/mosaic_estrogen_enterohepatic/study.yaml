@@ -1,5 +1,9 @@
 schema_version: 4
 name: mosaic_estrogen_enterohepatic
+simulator:
+  package: mosaic-compose-sim
+  ref: "0.1.0"
+  registry: git
 created: '2026-10-24'
 status: ran
 execution_status: ran

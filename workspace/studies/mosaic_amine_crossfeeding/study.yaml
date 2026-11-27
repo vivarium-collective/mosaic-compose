@@ -1,5 +1,9 @@
 schema_version: 4
 name: mosaic_amine_crossfeeding
+simulator:
+  package: mosaic-compose-sim
+  ref: "0.1.0"
+  registry: git
 created: '2026-11-21'
 status: evaluated
 execution_status: evaluated
