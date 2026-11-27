@@ -1,31 +1,21 @@
 [project]
 name = "mosaic-compose"
-version = "0.0.0"
-description = "MOSAIC — composition layer coupling metabolic, microbiome-community, PKPD, and agent-based models through hormone homeostasis"
+version = "0.1.0"
+description = "MOSAIC investigation workspace — composition studies coupling metabolic, microbiome-community, PKPD, and agent-based models. The composition layer (simulator) lives in mosaic-compose-sim, pinned per study for reproducibility."
 license = "Apache-2.0"
 requires-python = ">=3.11"
 dependencies = [
-    # >=1.11.2: the first release whose holes.py no longer imports the removed
-    # `bigraph_schema.matching`, so it does not transitively cap bigraph-schema
-    # below 1.8.4.
-    "process-bigraph>=1.11.2",
-    # The <1.8.4 cap was only needed because older process-bigraph imported the
-    # removed `bigraph_schema.matching` transitively; process-bigraph 1.11.2 dropped
-    # that, so the cap is retired. This workspace does not import matching directly.
-    "bigraph-schema>=1.8.1",
-    # viva-cobra — COBRApy dynamic-FBA components for the metabolic-arm composites.
-    "viva-cobra @ git+https://github.com/vivarium-collective/viva-cobra.git@main",
-    "bigraph-viz>=2.0.3",
+    # The composition layer (simulator): composites, inline models, visualizations.
+    # Pinned by git tag (see [tool.uv.sources]) so every study runs against this
+    # exact version; each study.yaml also records the pin under `simulator:`. Brings
+    # process-bigraph, bigraph-schema, viva-cobra, plotly, etc. transitively.
+    "mosaic-compose-sim",
+    # Workbench dashboard (serve/publish) + report tooling used by the WORKSPACE.
+    "vivarium-workbench",
     "pyyaml>=6.0",
     "jsonschema[format-nongpl]>=4.21",
     "jinja2>=3.1",
     "pypdf>=4.0",
-    "matplotlib",
-    "plotly",
-    # Web-based workspace dashboard (server + templates + assets + lib helpers).
-    # Extracted from viva-template as of v0.4.16; provides the `vivarium-workbench
-    # serve` CLI invoked by scripts/serve.sh.
-    "vivarium-workbench",
 ]
 
 [project.optional-dependencies]
@@ -36,21 +26,12 @@ dev = ["pytest>=7.4"]
 # publish/CI install stays light; the Foundations studies + the publish job that
 # renders them install `.[foundations]`.
 foundations = [
-    # ODE / kinetic — Stein-2013 gLV community + estrogen enterohepatic PK (Antimony/SBML).
-    # Python-gated to >=3.12: viva-tellurium depends on libroadrunner>=2.11, which
-    # ships no 3.11 wheels (cp312+ only). The workspace still supports 3.11 (see the
-    # note below), so the marker excludes the tellurium arm from a 3.11 resolution
-    # (keeps `uv sync`/CI green on 3.11) while the publish job (3.12) installs it.
-    "viva-tellurium @ git+https://github.com/vivarium-collective/viva-tellurium.git@main ; python_version >= '3.12'",
-    # Spatial / ABM — pymunk particle biofilm colony.
-    "viva-munk @ git+https://github.com/vivarium-collective/viva-munk.git@main",
-    # NOTE: viva-cpm (Cellular-Potts crypt) and vivarium-tyssue (vertex sheet) are
-    # intentionally NOT in this extra. Both are blocked prototypes, not used by any
-    # live study, and each breaks dependency resolution: viva-cpm requires Python
-    # >=3.12 (workspace supports >=3.11), and vivarium-tyssue pins the old
-    # `vivarium-dashboard` URL which conflicts with this workspace's
-    # `vivarium-workbench`. Re-add them (with a Python marker / URL override) when
-    # those arms are unblocked upstream — see composites/crypt.py.
+    # The ODE (viva-tellurium, py>=3.12) + ABM (viva-munk) backing-sim arms, via
+    # the simulator's own [foundations] extra. The git sources for them are kept
+    # in this repo's [tool.uv.sources] below, since uv sources do not propagate
+    # through a git dependency. (viva-cpm / vivarium-tyssue remain intentionally
+    # excluded — blocked prototypes; see the sim's composites/crypt.py.)
+    "mosaic-compose-sim[foundations]",
 ]
 
 [build-system]
@@ -62,12 +43,21 @@ build-backend = "hatchling.build"
 [tool.hatch.metadata]
 allow-direct-references = true
 
-# Declare the workspace Python package explicitly so this workspace is
-# pip-installable (e.g. `pip install git+<repo>@<sha>`).  sms-api injects it
-# as an extra_pip_dep so the container runner can import the workspace's
-# processes from a committed + pushed git ref.
+# Metadata-only wheel: the composition package (mosaic_compose) now lives in its
+# own distribution (mosaic-compose-sim). This repo is the investigation workspace
+# and ships no importable package of its own.
+# NOTE: remote runners (sms-api) that previously injected mosaic_compose from this
+# repo's git ref should now inject mosaic-compose-sim.
 [tool.hatch.build.targets.wheel]
-packages = ["mosaic_compose"]
+bypass-selection = true
 
 [tool.uv.sources]
+# The composition layer, pinned by git tag for reproducibility.
+mosaic-compose-sim = { git = "https://github.com/vivarium-collective/mosaic-compose-sim.git", tag = "0.1.0" }
+# Backing-sim git sources — declared here so mosaic-compose-sim's deps + its
+# [foundations] extra resolve (uv [tool.uv.sources] are top-level-only and do not
+# propagate through a git dependency).
+viva-cobra = { git = "https://github.com/vivarium-collective/viva-cobra.git", branch = "main" }
+viva-tellurium = { git = "https://github.com/vivarium-collective/viva-tellurium.git", branch = "main" }
+viva-munk = { git = "https://github.com/vivarium-collective/viva-munk.git", branch = "main" }
 vivarium-workbench = { git = "https://github.com/vivarium-collective/vivarium-workbench.git", branch = "main" }
